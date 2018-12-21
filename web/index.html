@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Test</title>
+	<link rel="stylesheet" href="./styles-$cachebuster$.css" />
+	<script src="./mithril.min.js"></script>
+	<script src="./src-$cachebuster$.js"></script>
+	<script src="./views-$cachebuster$.js"></script>
+	<script src="./ospec.js"></script>
+	<script src="./tests.js"></script>
+	<script>
+		const Data = $Data$
+		const state = {
+			table: Table.create(Data)
+		}
+		window.addEventListener('DOMContentLoaded', () => {
+			o.run()
+		})
+	</script>
+</head>
+
+<body>
+	<div id="app-output"></div>
+</body>
+
+</html>
