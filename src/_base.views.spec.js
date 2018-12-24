@@ -16,19 +16,19 @@ function DOM(){
 	return Array.from((root || document).querySelectorAll(componentToDOMMapping[selector]))
 }
 o.spec('In browser', ()=>{
-	const data = {}
+	const input = {}
 	o.beforeEach(()=>{
-		state.table = Table.create(Data)
-		
-		data.table = JSON.parse(JSON.stringify(Data))
-		data.rows = data.table.rows
-		data.cells = data.rows.map(r=>r.cells).flat()
+		input.table = JSON.parse(JSON.stringify(Data))
+		input.rows = input.table.rows
+		input.cells = input.rows.map(r=>r.cells).flat()
 
-		m.mount(document.getElementById('app-output'), Table.component)
+		m.mount(document.getElementById('app-output'), {
+			view: ()=>m(Table.component, {table: Table.create(Data)})
+		})
 	})
 	o('on load', ()=>{
 		o(DOM('tables').length).equals(1)
-		o(DOM('rows').length).equals(data.rows.length)
-		o(DOM('cells').map(c=>c.textContent)).deepEquals(data.cells.map(c=>c.datum))
+		o(DOM('rows').length).equals(input.rows.length)
+		o(DOM('cells').map(c=>c.textContent)).deepEquals(input.cells.map(c=>c.datum))
 	})
 })
