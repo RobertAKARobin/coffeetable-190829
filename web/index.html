@@ -11,10 +11,8 @@
 	<script src="./ospec.js"></script>
 	<script src="./tests.js"></script>
 	<script>
-		const Data = $Data$
-		const state = {
-			table: Table.create(Data)
-		}
+		const Data = Object.freeze($Data$)
+		const state = {}
 		window.addEventListener('DOMContentLoaded', () => {
 			o.run()
 		})
