@@ -29,6 +29,6 @@ o.spec('In browser', ()=>{
 	o('on load', ()=>{
 		o(DOM('tables').length).equals(1)
 		o(DOM('rows').length).equals(input.rows.length)
-		o(DOM('cells').map(c=>c.textContent)).deepEquals(input.cells.map(c=>c.datum))
+		o(DOM('cells').map(c=>c.textContent)).deepEquals(input.cells.map(c=>c.data))
 	})
 })

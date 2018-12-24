@@ -30,7 +30,7 @@ Object.defineProperties(Row, {
 				}
 			})
 			if(input.cells instanceof Array){
-				pvt.children = input.cells
+				pvt.children = input.cells.map(Cell.create)
 			}
 			return row
 		}

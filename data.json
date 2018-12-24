@@ -3,57 +3,57 @@
 		{
 			"cells": [
 				{
-					"datum": "ColA"
+					"data": "ColA"
 				},
 				{
-					"datum": "ColB"
+					"data": "ColB"
 				},
 				{
-					"datum": "ColC"
+					"data": "ColC"
 				},
 				{
-					"datum": "ColD"
+					"data": "ColD"
 				},
 				{
-					"datum": "ColE"
+					"data": "ColE"
 				}
 			]
 		},
 		{
 			"cells": [
 				{
-					"datum": "aaa"
+					"data": "aaa"
 				},
 				{
-					"datum": "bbb"
+					"data": "bbb"
 				},
 				{
-					"datum": "ccc"
+					"data": "ccc"
 				},
 				{
-					"datum": "ddd"
+					"data": "ddd"
 				},
 				{
-					"datum": "eee"
+					"data": "eee"
 				}
 			]
 		},
 		{
 			"cells": [
 				{
-					"datum": "fff"
+					"data": "fff"
 				},
 				{
-					"datum": "ggg"
+					"data": "ggg"
 				},
 				{
-					"datum": "hhh"
+					"data": "hhh"
 				},
 				{
-					"datum": "iii"
+					"data": "iii"
 				},
 				{
-					"datum": "jjj"
+					"data": "jjj"
 				}
 			]
 		}

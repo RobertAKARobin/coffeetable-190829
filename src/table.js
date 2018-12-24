@@ -38,7 +38,7 @@ Object.defineProperties(Table, {
 				}
 			})
 			if(input.rows instanceof Array){
-				pvt.children = input.rows
+				pvt.children = input.rows.map(Row.create)
 			}
 			return table
 		}
