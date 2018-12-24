@@ -13,9 +13,7 @@ o.spec('Table', ()=>{
 			o(table.getChildren()).deepEquals([])
 		})
 		o('.create({$rows})', ()=>{
-			const rows = [
-				{}, {}, {}
-			]
+			const rows = [{}, {}, {}]
 			const table = Table.create({rows})
 			o(table.class).equals(Table)
 			o(table.getChildren()).deepEquals(rows)
@@ -31,11 +29,13 @@ o.spec('@table', ()=>{
 	o('.getChildren()', ()=>{
 		o(Table.create().getChildren()).deepEquals([])
 
-		const rows = [
-			{}, {}, {}
-		]
+		const rows = [{}, {}, {}]
 		const table = Table.create({rows})
 		o(table.getChildren()).deepEquals(rows)
 		o(table.getChildren()).notEquals(rows)
+	})
+	o('.toJSON()', ()=>{
+		o(JSON.stringify(Table.create())).equals('{\"rows\":[]}')
+		o(JSON.stringify(Table.create({rows: [{},{},{}]}))).equals('{\"rows\":[{},{},{}]}')
 	})
 })

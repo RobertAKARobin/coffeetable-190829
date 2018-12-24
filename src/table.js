@@ -10,6 +10,14 @@ Object.defineProperties(Table, {
 		value: Object.defineProperties({}, {
 			class: {
 				value: Table
+			},
+
+			toJSON: {
+				value: function(){
+					return {
+						rows: this.getChildren()
+					}
+				}
 			}
 		})
 	},
