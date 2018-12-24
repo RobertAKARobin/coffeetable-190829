@@ -1,41 +1,18 @@
-o.spec('Table', ()=>{
-	o('.name', ()=>{
-		o(Table.name).equals('Table')
-	})
-	o('.pluralName', ()=>{
-		o(Table.pluralName).equals('tables')
-	})
+;(function(){
+	const oo = Coffeetable.spec(Table, 'rows')
 
-	o.spec('.create', ()=>{
-		o('.create()', ()=>{
-			const table = Table.create()
-			o(table.class).equals(Table)
-			o(table.getChildren()).deepEquals([])
-		})
-		o('.create({$rows})', ()=>{
-			const rows = [{}, {}, {}]
-			const table = Table.create({rows})
-			o(table.class).equals(Table)
-			o(table.getChildren()).deepEquals(rows)
+	o.spec('Table', ()=>{	
+		oo.create()
+	})
+	o.spec('@table', ()=>{
+		const _ = {}
+
+		oo.class()
+
+		oo.getChildren()
+		o('.toJSON()', ()=>{
+			o(JSON.stringify(Table.create())).equals('{\"rows\":[]}')
+			o(JSON.stringify(Table.create({rows: [{},{},{}]}))).equals('{\"rows\":[{},{},{}]}')
 		})
 	})
-})
-o.spec('@table', ()=>{
-	const _ = {}
-	o('.class', ()=>{
-		o(Table.create().class).equals(Table)
-	})
-
-	o('.getChildren()', ()=>{
-		o(Table.create().getChildren()).deepEquals([])
-
-		const rows = [{}, {}, {}]
-		const table = Table.create({rows})
-		o(table.getChildren()).deepEquals(rows)
-		o(table.getChildren()).notEquals(rows)
-	})
-	o('.toJSON()', ()=>{
-		o(JSON.stringify(Table.create())).equals('{\"rows\":[]}')
-		o(JSON.stringify(Table.create({rows: [{},{},{}]}))).equals('{\"rows\":[{},{},{}]}')
-	})
-})
+})();

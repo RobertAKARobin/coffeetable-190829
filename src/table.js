@@ -27,7 +27,7 @@ Object.defineProperties(Table, {
 			const pvt = {
 				children: []
 			}
-			const table = pvt.instance = Object.create(Table.proto, {
+			const table = Object.create(Table.proto, {
 				getChildren: {
 					value: ()=>{
 						return Array.from(pvt.children)
