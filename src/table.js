@@ -1,4 +1,7 @@
 Object.defineProperties(Table, {
+	child: {
+		value: Row
+	},
 	name: {
 		value: 'Table'
 	},
