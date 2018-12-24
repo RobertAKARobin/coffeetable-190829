@@ -1,5 +1,5 @@
 ;(function(){
-	const oo = Coffeetable.spec(Row, 'cells')
+	const oo = Coffeetable.spec(Row)
 
 	o.spec('Row', ()=>{
 		oo.create()
@@ -10,9 +10,9 @@
 		oo.class()
 		
 		oo.getChildren()
-		// o('.toJSON()', ()=>{
-		// 	o(JSON.stringify(Table.create())).equals('{\"rows\":[]}')
-		// 	o(JSON.stringify(Table.create({rows: [{},{},{}]}))).equals('{\"rows\":[{},{},{}]}')
-		// })
+		o('.toJSON()', ()=>{
+			o(JSON.stringify(Row.create())).equals('{\"cells\":[]}')
+			o(JSON.stringify(Row.create({cells: [{},{},{}]}))).equals('{\"cells\":[{},{},{}]}')
+		})
 	})
 })();

@@ -13,6 +13,14 @@ Object.defineProperties(Row, {
 		value: Object.defineProperties({}, {
 			class: {
 				value: Row
+			},
+
+			toJSON: {
+				value: function(){
+					return {
+						cells: this.getChildren()
+					}
+				}
 			}
 		})
 	},
