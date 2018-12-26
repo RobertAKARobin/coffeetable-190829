@@ -50,9 +50,9 @@ Object.defineProperties(Table, {
 			}
 			const table = Object.create(Table.proto, {
 				createChild: {
-					value: data=>{
+					value: (data, place)=>{
 						const row = Row.create(data)
-						pvt.children.push(row)
+						pvt.children.place(row, place)
 						return row
 					}
 				},

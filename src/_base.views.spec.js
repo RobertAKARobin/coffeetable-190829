@@ -4,7 +4,7 @@ function frame(){
 const componentToDOMMapping = {
 	'tables': 'table',
 	'rows': 'tbody.body tr',
-	'cells': 'td',
+	'cells': 'td textarea',
 	'columns': 'col',
 
 	'createRow': '[action=createRow]',
@@ -39,13 +39,22 @@ o.spec('In browser', ()=>{
 		o(DOM('tables').length).equals(1)
 		o(DOM('rows').length).equals(input.rows.length)
 		o(DOM('columns').length).equals(Math.max(...input.rows.map(r=>r.cells.length)))
-		o(DOM('cells').map(c=>c.textContent)).deepEquals(input.cells.map(c=>c.data))
+		o(DOM('cells').map(c=>c.value)).deepEquals(input.cells.map(c=>c.data))
 	})
 	o('on click createRow', async ()=>{
 		const initialNumberOfRows = DOM('rows').length
-		DOM('createRow')[0].click()
+		const firstRow = DOM('rows')[0]
+		const firstRowContent = DOM(firstRow, 'cells').map(c=>c.value)
+		const secondRow = DOM('rows')[1]
+		const secondRowContent = DOM(secondRow, 'cells').map(c=>c.value)
+		
+		DOM('createRow')[1].click()
 		await frame()
+
 		o(DOM('rows').length).equals(initialNumberOfRows + 1)
+		o(DOM(firstRow, 'cells').map(c=>c.value)).deepEquals(firstRowContent)
+		const thirdRow = DOM('rows')[2]
+		o(DOM(thirdRow, 'cells').map(c=>c.value)).deepEquals(secondRowContent)
 	})
 	// o('on click removeRow', ()=>{
 	// 	const initialNumberOfRows = DOM('rows').length
