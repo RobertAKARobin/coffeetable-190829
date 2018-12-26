@@ -10,6 +10,9 @@
 		oo.class()
 		
 		oo.getChildren()
+		o('.getWidth()', ()=>{
+			o(Row.create({cells: [{},{},{}]}).getWidth()).equals(3)
+		})
 		o('.toJSON()', ()=>{
 			o(JSON.stringify(Row.create())).equals('{\"cells\":[]}')
 			o(JSON.stringify(Row.create({cells: [{},{},{}]}))).equals('{\"cells\":[{},{},{}]}')

@@ -22,6 +22,12 @@ Object.defineProperties(Table, {
 					})
 				}
 			},
+			getWidth: {
+				value: function(){
+					const widths = this.getChildren().map(r=>r.getWidth())
+					return Math.max(...widths)
+				}
+			},
 			toJSON: {
 				value: function(){
 					return {

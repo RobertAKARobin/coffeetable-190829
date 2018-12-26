@@ -15,6 +15,11 @@ Object.defineProperties(Row, {
 				value: Row
 			},
 
+			getWidth: {	
+				value: function(){
+					return this.getChildren().length
+				}
+			},
 			toJSON: {
 				value: function(){
 					return {
