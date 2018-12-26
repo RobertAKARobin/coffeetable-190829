@@ -17,10 +17,10 @@ o.spec('@row', ()=>{
 	o('.getCells()', ()=>{
 		o(Row.create().getCells()).deepEquals([])
 
-		// const cells = [{}, {}, {}]
-		// const row = Row.create({cells: cells})
-		// // o(instance.getChildren()).deepEquals(children)
-		// o(row.getCells()).notEquals(rows)
+		const cells = [{}, {}, {}]
+		const row = Row.create({cells: cells})
+		// o(row.getCells()).deepEquals(cells)
+		o(row.getCells()).notEquals(cells)
 	})
 	o('.getWidth()', ()=>{
 		o(Row.create({cells: [{},{},{}]}).getWidth()).equals(3)

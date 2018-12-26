@@ -46,6 +46,12 @@ Table.component = {
 						row.getCells().pad({}, table.getWidth()).map(cell=>{
 							return m(`td[columnPlace=${place}]`, [
 								m('textarea', {
+									oninput(event){
+										cell.data = event.target.value
+									},
+									style: {
+										'background-color': (cell.class === Cell ? 'initial' : '#ffc')
+									},
 									value: cell.data
 								})
 							])

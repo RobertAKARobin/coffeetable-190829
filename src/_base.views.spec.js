@@ -48,7 +48,7 @@ o.spec('In browser', ()=>{
 		const secondRow = DOM('rows')[1]
 		const secondRowContent = DOM(secondRow, 'cells').map(c=>c.value)
 		
-		DOM('createRow')[1].click()
+		DOM('createRow')[1].dispatchEvent(new Event('click'))
 		await frame()
 
 		o(DOM('rows').length).equals(initialNumberOfRows + 1)
@@ -61,7 +61,7 @@ o.spec('In browser', ()=>{
 	o('on click removeRow', async ()=>{
 		const initialNumberOfRows = DOM('rows').length
 
-		DOM('removeRow')[0].click()
+		DOM('removeRow')[0].dispatchEvent(new Event('click'))
 		await frame()
 
 		o(DOM('rows').length).equals(initialNumberOfRows - 1)
@@ -71,7 +71,7 @@ o.spec('In browser', ()=>{
 		const firstColumnContent = DOM('rows').map(r=>DOM(r, 'cells')[0]).map(c=>c.value)
 		const secondColumnContent = DOM('rows').map(r=>DOM(r, 'cells')[1]).map(c=>c.value)
 
-		DOM('createColumn')[1].click()
+		DOM('createColumn')[1].dispatchEvent(new Event('click'))
 		await frame()
 
 		o(DOM('columns').length).equals(initialNumberOfColumns + 1)
@@ -81,8 +81,8 @@ o.spec('In browser', ()=>{
 	o('on createRow and createColumn', async ()=>{
 		const initialNumberOfColumns = DOM('columns').length
 
-		DOM('createRow')[1].click()
-		DOM('createColumn')[1].click()
+		DOM('createRow')[1].dispatchEvent(new Event('click'))
+		DOM('createColumn')[1].dispatchEvent(new Event('click'))
 		await frame()
 
 		o(DOM(DOM('rows')[1], 'cells').length).equals(initialNumberOfColumns + 1)
@@ -93,7 +93,7 @@ o.spec('In browser', ()=>{
 	o('on click removeColumn', async ()=>{
 		const initialNumberOfColumns = DOM('columns').length
 
-		DOM('removeColumn')[0].click()
+		DOM('removeColumn')[0].dispatchEvent(new Event('click'))
 		await frame()
 
 		o(DOM('columns').length).equals(initialNumberOfColumns - 1)
