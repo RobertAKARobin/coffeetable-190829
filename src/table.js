@@ -15,6 +15,13 @@ Object.defineProperties(Table, {
 				value: Table
 			},
 
+			getColumnAt: {
+				value: function(index){
+					return this.getChildren().map(row=>{
+						return row.getChildren()[index]
+					})
+				}
+			},
 			toJSON: {
 				value: function(){
 					return {
