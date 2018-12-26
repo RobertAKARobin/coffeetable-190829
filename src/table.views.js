@@ -13,14 +13,14 @@ Table.component = {
 					table.getWidth().map(index=>{
 						return m('th', [
 							index,
-							m('button[action=createColumn]', {
-								onclick(event){
-									table.createColumn([]).placeAt(index)
-								}
-							}, '-'),
 							m('button[action=removeColumn]', {
 								onclick(event){
 									table.removeColumnAt(index)
+								}
+							}, '-'),
+							m('button[action=createColumn]', {
+								onclick(event){
+									table.createColumn([], index)
 								}
 							}, '+')
 						])
@@ -32,14 +32,14 @@ Table.component = {
 					return m('tr', [
 						m('th', [
 							index,
-							m('button[action=createRow]', {
-								onclick(event){
-									table.createChild({}).placeAt(index)
-								}
-							}, '-'),
 							m('button[action=removeRow]', {
 								onclick(event){
 									table.removeChildAt(index)
+								}
+							}, '-'),
+							m('button[action=createRow]', {
+								onclick(event){
+									table.createChild({}, index)
 								}
 							}, '+')
 						]),

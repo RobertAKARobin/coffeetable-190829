@@ -49,6 +49,13 @@ Object.defineProperties(Table, {
 				children: []
 			}
 			const table = Object.create(Table.proto, {
+				createChild: {
+					value: data=>{
+						const row = Row.create(data)
+						pvt.children.push(row)
+						return row
+					}
+				},
 				getChildren: {
 					value: ()=>{
 						return Array.from(pvt.children)
@@ -56,7 +63,7 @@ Object.defineProperties(Table, {
 				}
 			})
 			if(input.rows instanceof Array){
-				pvt.children = input.rows.map(Row.create)
+				pvt.children = input.rows.map(table.createChild)
 			}
 			return table
 		}
