@@ -1,14 +1,4 @@
 Object.defineProperties(Row, {
-	child: {
-		value: Cell
-	},
-	name: {
-		value: 'Row'
-	},
-	pluralName: {
-		value: 'rows'
-	},
-
 	proto: {
 		value: Object.defineProperties({}, {
 			class: {
@@ -17,13 +7,13 @@ Object.defineProperties(Row, {
 
 			getWidth: {	
 				value: function(){
-					return this.getChildren().length
+					return this.getCells().length
 				}
 			},
 			toJSON: {
 				value: function(){
 					return {
-						cells: this.getChildren()
+						cells: this.getCells()
 					}
 				}
 			}
@@ -33,17 +23,17 @@ Object.defineProperties(Row, {
 	create: {
 		value: function(input = {}){
 			const pvt = {
-				children: []
+				cells: []
 			}
 			const row = Object.create(Row.proto, {
-				getChildren: {
+				getCells: {
 					value: function(){
-						return Array.from(pvt.children)
+						return Array.from(pvt.cells)
 					}
 				}
 			})
 			if(input.cells instanceof Array){
-				pvt.children = input.cells.map(Cell.create)
+				pvt.cells = input.cells.map(Cell.create)
 			}
 			return row
 		}

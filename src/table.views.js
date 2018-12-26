@@ -28,22 +28,22 @@ Table.component = {
 				])
 			]),
 			m('tbody.body', [
-				table.getChildren().map((row, place)=>{
+				table.getRows().map((row, place)=>{
 					return m('tr', [
 						m('th', [
 							place,
 							m('button[action=removeRow]', {
 								onclick(event){
-									table.removeChild(place)
+									table.removeRow(place)
 								}
 							}, '-'),
 							m('button[action=createRow]', {
 								onclick(event){
-									table.createChild({}, place)
+									table.createRow({}, place)
 								}
 							}, '+')
 						]),
-						row.getChildren().pad({}, table.getWidth()).map(cell=>{
+						row.getCells().pad({}, table.getWidth()).map(cell=>{
 							return m(`td[columnPlace=${place}]`, [
 								m('textarea', {
 									value: cell.data

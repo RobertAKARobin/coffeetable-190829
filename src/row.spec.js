@@ -1,21 +1,32 @@
-;(function(){
-	const oo = Coffeetable.spec(Row)
-
-	o.spec('Row', ()=>{
-		oo.create()
-	})
-	o.spec('@row', ()=>{
-		const _ = {}
-
-		oo.class()
-		
-		oo.getChildren()
-		o('.getWidth()', ()=>{
-			o(Row.create({cells: [{},{},{}]}).getWidth()).equals(3)
+o.spec('Row', ()=>{
+	o.spec('.create', ()=>{
+		o('.create()', ()=>{
+			const row = Row.create()
+			o(row.class).equals(Row)
+			o(row.getCells()).deepEquals([])
 		})
-		o('.toJSON()', ()=>{
-			o(JSON.stringify(Row.create())).equals('{\"cells\":[]}')
-			o(JSON.stringify(Row.create({cells: [{},{},{}]}))).equals('{\"cells\":[{},{},{}]}')
+		o('.create({$cells})', ()=>{
+			const cells = [{}, {}, {}]
+			const row = Row.create({cells: cells})
+			o(row.class).equals(Row)
+			// o(instance.getChildren()).deepEquals(children)
 		})
 	})
-})();
+})
+o.spec('@row', ()=>{
+	o('.getCells()', ()=>{
+		o(Row.create().getCells()).deepEquals([])
+
+		// const cells = [{}, {}, {}]
+		// const row = Row.create({cells: cells})
+		// // o(instance.getChildren()).deepEquals(children)
+		// o(row.getCells()).notEquals(rows)
+	})
+	o('.getWidth()', ()=>{
+		o(Row.create({cells: [{},{},{}]}).getWidth()).equals(3)
+	})
+	o('.toJSON()', ()=>{
+		o(JSON.stringify(Row.create())).equals('{\"cells\":[]}')
+		o(JSON.stringify(Row.create({cells: [{},{},{}]}))).equals('{\"cells\":[{},{},{}]}')
+	})
+})

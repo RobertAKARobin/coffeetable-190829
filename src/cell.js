@@ -1,11 +1,4 @@
 Object.defineProperties(Cell, {
-	name: {
-		value: 'Cell'
-	},
-	pluralName: {
-		value: 'cells'
-	},
-
 	proto: {
 		value: Object.defineProperties({}, {
 

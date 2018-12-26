@@ -63,7 +63,7 @@ o.spec('In browser', ()=>{
 
 		DOM('removeRow')[0].click()
 		await frame()
-		
+
 		o(DOM('rows').length).equals(initialNumberOfRows - 1)
 	})
 	o('on click createColumn', async ()=>{

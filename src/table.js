@@ -1,14 +1,4 @@
 Object.defineProperties(Table, {
-	child: {
-		value: Row
-	},
-	name: {
-		value: 'Table'
-	},
-	pluralName: {
-		value: 'tables'
-	},
-
 	proto: {
 		value: Object.defineProperties({}, {
 			class: {
@@ -17,8 +7,8 @@ Object.defineProperties(Table, {
 
 			getColumnAt: {
 				value: function(index){
-					return this.getChildren().map(row=>{
-						return row.getChildren()[index]
+					return this.getRows().map(row=>{
+						return row.getCells()[index]
 					})
 				}
 			},
@@ -30,7 +20,7 @@ Object.defineProperties(Table, {
 			toJSON: {
 				value: function(){
 					return {
-						rows: this.getChildren()
+						rows: this.getRows()
 					}
 				}
 			}
@@ -40,22 +30,14 @@ Object.defineProperties(Table, {
 	create: {
 		value: (input = {})=>{
 			const pvt = {
-				children: [],
+				rows: [],
 				width: 0
 			}
 			const table = Object.create(Table.proto, {
-				createChild: {
-					value: function(rowInput = {}, place){
-						const row = Row.create(rowInput)
-						pvt.children.place(row, place)
-						pvt.width = Math.max(0, pvt.width, (rowInput.cells ? rowInput.cells.length : 0))
-						return row
-					}
-				},
 				createColumn: {
 					value: function(place){
 						pvt.width += 1
-						pvt.children = pvt.children.map(row=>{
+						pvt.rows = pvt.rows.map(row=>{
 							const data = row.toJSON()
 							data.cells.insert('', place)
 							return Row.create(data)
@@ -63,9 +45,17 @@ Object.defineProperties(Table, {
 						return this
 					}
 				},
-				getChildren: {
+				createRow: {
+					value: function(rowInput = {}, place){
+						const row = Row.create(rowInput)
+						pvt.rows.place(row, place)
+						pvt.width = Math.max(0, pvt.width, (rowInput.cells ? rowInput.cells.length : 0))
+						return row
+					}
+				},
+				getRows: {
 					value: function(){
-						return Array.from(pvt.children)
+						return Array.from(pvt.rows)
 					}
 				},
 				getWidth: {
@@ -77,7 +67,7 @@ Object.defineProperties(Table, {
 					value: function(place){
 						if(pvt.width !== 0){
 							pvt.width -= 1
-							pvt.children = pvt.children.map(row=>{
+							pvt.rows = pvt.rows.map(row=>{
 								const data = row.toJSON()
 								data.cells.splice(place, 1)
 								return Row.create(data)
@@ -86,15 +76,15 @@ Object.defineProperties(Table, {
 						return this
 					}
 				},
-				removeChild: {
+				removeRow: {
 					value: function(place){
-						pvt.children.splice(place, 1)
+						pvt.rows.splice(place, 1)
 						return this
 					}
 				}
 			})
 			if(input.rows instanceof Array){
-				input.rows.forEach(table.createChild.bind(table))
+				input.rows.forEach(table.createRow.bind(table))
 			}
 			return table
 		}
