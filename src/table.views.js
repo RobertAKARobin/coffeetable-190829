@@ -15,7 +15,7 @@ Table.component = {
 							place,
 							m('button[action=removeColumn]', {
 								onclick(event){
-									table.removeColumnAt(place)
+									table.removeColumn(place)
 								}
 							}, '-'),
 							m('button[action=createColumn]', {
@@ -34,7 +34,7 @@ Table.component = {
 							place,
 							m('button[action=removeRow]', {
 								onclick(event){
-									table.removeChildAt(place)
+									table.removeChild(place)
 								}
 							}, '-'),
 							m('button[action=createRow]', {

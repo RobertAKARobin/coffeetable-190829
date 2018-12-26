@@ -60,6 +60,7 @@ Object.defineProperties(Table, {
 							data.cells.insert('', place)
 							return Row.create(data)
 						})
+						return this
 					}
 				},
 				getChildren: {
@@ -70,6 +71,25 @@ Object.defineProperties(Table, {
 				getWidth: {
 					value: function(){
 						return pvt.width
+					}
+				},
+				removeColumn: {
+					value: function(place){
+						if(pvt.width !== 0){
+							pvt.width -= 1
+							pvt.children = pvt.children.map(row=>{
+								const data = row.toJSON()
+								data.cells.splice(place, 1)
+								return Row.create(data)
+							})
+						}
+						return this
+					}
+				},
+				removeChild: {
+					value: function(place){
+						pvt.children.splice(place, 1)
+						return this
 					}
 				}
 			})
