@@ -3,7 +3,7 @@ function frame(){
 }
 const componentToDOMMapping = {
 	'tables': 'table',
-	'rows': 'tr',
+	'rows': 'tbody.body tr',
 	'cells': 'td'
 }
 function DOM(){

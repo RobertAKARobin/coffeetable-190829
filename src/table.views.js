@@ -1,10 +1,19 @@
 Table.component = {
 	view: function(vnode){
 		const table = vnode.attrs.table
-		return m('table', table.getChildren().map(row=>{
-			return m('tr', row.getChildren().map(cell=>{
-				return m('td', cell.data)
-			}))
-		}))
+		return m('table', [
+			m('tbody.head', [
+				m('tr', [
+					table.getWidth().map(index=>{
+						return m('th', index)
+					})
+				])
+			]),
+			m('tbody.body', [
+				table.getChildren().map(row=>{
+					return m(Row.component, {row})
+				})
+			])
+		])
 	}
 }
