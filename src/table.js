@@ -30,7 +30,7 @@ Object.defineProperties(Table, {
 			getWidth: {
 				value: function(){
 					const widths = this.getChildren().map(r=>r.getWidth())
-					return Math.max(...widths)
+					return Math.max(0, ...widths)
 				}
 			},
 			toJSON: {
@@ -50,20 +50,20 @@ Object.defineProperties(Table, {
 			}
 			const table = Object.create(Table.proto, {
 				createChild: {
-					value: (data, place)=>{
+					value: function(data, place){
 						const row = Row.create(data)
 						pvt.children.place(row, place)
 						return row
 					}
 				},
 				getChildren: {
-					value: ()=>{
+					value: function(){
 						return Array.from(pvt.children)
 					}
 				}
 			})
 			if(input.rows instanceof Array){
-				pvt.children = input.rows.map(table.createChild)
+				input.rows.forEach(table.createChild.bind(table))
 			}
 			return table
 		}

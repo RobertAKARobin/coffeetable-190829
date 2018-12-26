@@ -25,8 +25,8 @@
 			o(columns[2].map(c=>c.data)).deepEquals(['ColC', 'ccc', 'hhh'])
 		})
 		o('.getWidth()', ()=>{
-			const table = Table.create(Data)
-			o(table.getWidth()).equals(5)
+			o(Table.create(Data).getWidth()).equals(5)
+			o(Table.create().getWidth()).equals(0)
 		})
 		o('.toJSON()', ()=>{
 			o(JSON.stringify(Table.create())).equals('{\"rows\":[]}')

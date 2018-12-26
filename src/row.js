@@ -37,7 +37,7 @@ Object.defineProperties(Row, {
 			}
 			const row = Object.create(Row.proto, {
 				getChildren: {
-					value: ()=>{
+					value: function(){
 						return Array.from(pvt.children)
 					}
 				}
