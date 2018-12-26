@@ -46,21 +46,10 @@ Object.defineProperties(Table, {
 			const table = Object.create(Table.proto, {
 				createChild: {
 					value: function(rowInput = {}, place){
-						rowInput.cells = (rowInput.cells || []).pad({}, this.getWidth())
 						const row = Row.create(rowInput)
 						pvt.children.place(row, place)
+						pvt.width = Math.max(0, pvt.width, (rowInput.cells ? rowInput.cells.length : 0))
 						return row
-					}
-				},
-				createChildren: {
-					value: function(rowsInput = {}){
-						if(rowsInput instanceof Array){
-							pvt.width = Math.max(0, ...rowsInput.map(r=>r.cells ? r.cells.length : 0))
-							rowsInput.forEach(row=>{
-								row.cells = (row.cells || []).pad({}, this.getWidth())
-							})
-							pvt.children = rowsInput.map(Row.create)
-						}
 					}
 				},
 				getChildren: {
@@ -74,7 +63,9 @@ Object.defineProperties(Table, {
 					}
 				}
 			})
-			table.createChildren(input.rows)
+			if(input.rows instanceof Array){
+				input.rows.forEach(table.createChild.bind(table))
+			}
 			return table
 		}
 	}

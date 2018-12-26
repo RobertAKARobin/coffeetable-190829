@@ -43,7 +43,13 @@ Table.component = {
 								}
 							}, '+')
 						]),
-						m(Row.component, {row})
+						row.getChildren().pad({}, table.getWidth()).map(cell=>{
+							return m('td', [
+								m('textarea', {
+									value: cell.data
+								})
+							])
+						})
 					])
 				})
 			])

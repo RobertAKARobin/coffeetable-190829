@@ -55,6 +55,8 @@ o.spec('In browser', ()=>{
 		o(DOM(firstRow, 'cells').map(c=>c.value)).deepEquals(firstRowContent)
 		const thirdRow = DOM('rows')[2]
 		o(DOM(thirdRow, 'cells').map(c=>c.value)).deepEquals(secondRowContent)
+
+		o(DOM('rows').map(row=>DOM(row, 'cells').length).allEqual()).equals(true)
 	})
 	// o('on click removeRow', ()=>{
 	// 	const initialNumberOfRows = DOM('rows').length
