@@ -75,6 +75,18 @@ o.spec('In browser', ()=>{
 		o(DOM('rows').map(r=>DOM(r, 'cells')[0]).map(c=>c.value)).deepEquals(firstColumnContent)
 		o(DOM('rows').map(r=>DOM(r, 'cells')[2]).map(c=>c.value)).deepEquals(secondColumnContent)
 	})
+	o('on createRow and createColumn', async ()=>{
+		const initialNumberOfColumns = DOM('columns').length
+
+		DOM('createRow')[1].click()
+		DOM('createColumn')[1].click()
+		await frame()
+
+		o(DOM(DOM('rows')[1], 'cells').length).equals(initialNumberOfColumns + 1)
+		o(DOM('rows').map(r=>DOM(r, 'cells').length).allEqual()).equals(true)
+
+		o(initialNumberOfColumns.map(p=>DOM(`columnPlace=${p}`).length).allEqual()).equals(true)
+	})
 	// o('on click removeColumn', ()=>{
 	// 	const initialNumberOfColumns = DOM('columns').length
 	// 	DOM('removeColumn')[0].click()
