@@ -78,17 +78,37 @@ o.spec('In browser', ()=>{
 		o(DOM('rows').map(r=>DOM(r, 'cells')[0]).map(c=>c.value)).deepEquals(firstColumnContent)
 		o(DOM('rows').map(r=>DOM(r, 'cells')[2]).map(c=>c.value)).deepEquals(secondColumnContent)
 	})
-	o('on createRow and createColumn', async ()=>{
-		const initialNumberOfColumns = DOM('columns').length
+	o.spec('on createRow and createColumn', ()=>{
+		o('creates both', async ()=>{
+			const initialNumberOfColumns = DOM('columns').length
+	
+			DOM('createRow')[1].dispatchEvent(new Event('click'))
+			DOM('createColumn')[1].dispatchEvent(new Event('click'))
+			await frame()
+	
+			o(DOM(DOM('rows')[1], 'cells').length).equals(initialNumberOfColumns + 1)
+			o(DOM('rows').map(r=>DOM(r, 'cells').length).allEqual()).equals(true)
+	
+			o(initialNumberOfColumns.map(p=>DOM(`columnPlace=${p}`).length).allEqual()).equals(true)
+			// TODO: Test is inaccurate
+		})
+		o.only('moves data accordingly', async ()=>{
+			DOM('createRow')[0].dispatchEvent(new Event('click'))
+			await frame()
+			
+			const firstRow = DOM('rows')[0]
+			DOM(firstRow, 'cells')[0].value = 'aaa'
+			DOM(firstRow, 'cells')[0].dispatchEvent(new Event('input'))
+			await frame()
 
-		DOM('createRow')[1].dispatchEvent(new Event('click'))
-		DOM('createColumn')[1].dispatchEvent(new Event('click'))
-		await frame()
+			o(DOM(firstRow, 'cells')[0].value).equals('aaa')
 
-		o(DOM(DOM('rows')[1], 'cells').length).equals(initialNumberOfColumns + 1)
-		o(DOM('rows').map(r=>DOM(r, 'cells').length).allEqual()).equals(true)
+			DOM('createColumn')[0].dispatchEvent(new Event('click'))
+			await frame()
 
-		o(initialNumberOfColumns.map(p=>DOM(`columnPlace=${p}`).length).allEqual()).equals(true)
+			o(DOM(firstRow, 'cells')[0].value).equals('')
+			o(DOM(firstRow, 'cells')[1].value).equals('aaa')
+		})
 	})
 	o('on click removeColumn', async ()=>{
 		const initialNumberOfColumns = DOM('columns').length
