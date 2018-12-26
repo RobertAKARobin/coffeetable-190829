@@ -52,6 +52,16 @@ Object.defineProperties(Table, {
 						return row
 					}
 				},
+				createColumn: {
+					value: function(place){
+						pvt.width += 1
+						pvt.children = pvt.children.map(row=>{
+							const data = row.toJSON()
+							data.cells.insert('', place)
+							return Row.create(data)
+						})
+					}
+				},
 				getChildren: {
 					value: function(){
 						return Array.from(pvt.children)
