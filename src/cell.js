@@ -1,7 +1,9 @@
 Object.defineProperties(Cell, {
 	proto: {
 		value: Object.defineProperties({}, {
-
+			class: {
+				value: Cell
+			}
 		})
 	},
 
