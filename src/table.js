@@ -27,12 +27,6 @@ Object.defineProperties(Table, {
 					return this.getWidth().map(this.getColumnAt.bind(this))
 				}	
 			},
-			getWidth: {
-				value: function(){
-					const widths = this.getChildren().map(r=>r.getWidth())
-					return Math.max(0, ...widths)
-				}
-			},
 			toJSON: {
 				value: function(){
 					return {
@@ -46,25 +40,41 @@ Object.defineProperties(Table, {
 	create: {
 		value: (input = {})=>{
 			const pvt = {
-				children: []
+				children: [],
+				width: 0
 			}
 			const table = Object.create(Table.proto, {
 				createChild: {
-					value: function(data, place){
-						const row = Row.create(data)
+					value: function(rowInput = {}, place){
+						rowInput.cells = (rowInput.cells || []).pad({}, this.getWidth())
+						const row = Row.create(rowInput)
 						pvt.children.place(row, place)
 						return row
+					}
+				},
+				createChildren: {
+					value: function(rowsInput = {}){
+						if(rowsInput instanceof Array){
+							pvt.width = Math.max(0, ...rowsInput.map(r=>r.cells ? r.cells.length : 0))
+							rowsInput.forEach(row=>{
+								row.cells = (row.cells || []).pad({}, this.getWidth())
+							})
+							pvt.children = rowsInput.map(Row.create)
+						}
 					}
 				},
 				getChildren: {
 					value: function(){
 						return Array.from(pvt.children)
 					}
+				},
+				getWidth: {
+					value: function(){
+						return pvt.width
+					}
 				}
 			})
-			if(input.rows instanceof Array){
-				input.rows.forEach(table.createChild.bind(table))
-			}
+			table.createChildren(input.rows)
 			return table
 		}
 	}
