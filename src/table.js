@@ -22,6 +22,11 @@ Object.defineProperties(Table, {
 					})
 				}
 			},
+			getColumns: {
+				value: function(){
+					return this.getWidth().map(this.getColumnAt.bind(this))
+				}	
+			},
 			getWidth: {
 				value: function(){
 					const widths = this.getChildren().map(r=>r.getWidth())

@@ -18,6 +18,12 @@
 				o(table.getColumnAt(2).map(c=>c.data)).deepEquals(['ColC', 'ccc', 'hhh'])
 			})
 		})
+		o('.getColumns()', ()=>{
+			const columns = Table.create(Data).getColumns()
+			o(columns[0].map(c=>c.data)).deepEquals(['ColA', 'aaa', 'fff'])
+			o(columns[1].map(c=>c.data)).deepEquals(['ColB', 'bbb', 'ggg'])
+			o(columns[2].map(c=>c.data)).deepEquals(['ColC', 'ccc', 'hhh'])
+		})
 		o('.getWidth()', ()=>{
 			const table = Table.create(Data)
 			o(table.getWidth()).equals(5)
