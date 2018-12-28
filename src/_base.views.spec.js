@@ -41,22 +41,50 @@ o.spec('In browser', ()=>{
 		o(DOM('columns').length).equals(Math.max(...input.rows.map(r=>r.cells.length)))
 		o(DOM('cells').map(c=>c.value)).deepEquals(input.cells.map(c=>c.data))
 	})
-	o('on click createRow', async ()=>{
-		const initialNumberOfRows = DOM('rows').length
-		const firstRow = DOM('rows')[0]
-		const firstRowContent = DOM(firstRow, 'cells').map(c=>c.value)
-		const secondRow = DOM('rows')[1]
-		const secondRowContent = DOM(secondRow, 'cells').map(c=>c.value)
-		
-		DOM('createRow')[1].dispatchEvent(new Event('click'))
-		await frame()
+	o.spec('on click createRow', ()=>{
+		o('creates row', async ()=>{
+			const initialNumberOfRows = DOM('rows').length
+			const firstRow = DOM('rows')[0]
+			const firstRowContent = DOM(firstRow, 'cells').map(c=>c.value)
+			const secondRow = DOM('rows')[1]
+			const secondRowContent = DOM(secondRow, 'cells').map(c=>c.value)
+			
+			DOM('createRow')[1].dispatchEvent(new Event('click'))
+			await frame()
+	
+			o(DOM('rows').length).equals(initialNumberOfRows + 1)
+			o(DOM(firstRow, 'cells').map(c=>c.value)).deepEquals(firstRowContent)
+			const thirdRow = DOM('rows')[2]
+			o(DOM(thirdRow, 'cells').map(c=>c.value)).deepEquals(secondRowContent)
+	
+			o(DOM('rows').map(row=>DOM(row, 'cells').length).allEqual()).equals(true)
+		})
+		o('moves data', async ()=>{
+			const anchorPlace = 1
+			const anchorRow = DOM('rows')[anchorPlace]
+			const anchorCell = DOM(anchorRow, 'cells')[0]
+			const initialAnchorCellValue = anchorCell.value
 
-		o(DOM('rows').length).equals(initialNumberOfRows + 1)
-		o(DOM(firstRow, 'cells').map(c=>c.value)).deepEquals(firstRowContent)
-		const thirdRow = DOM('rows')[2]
-		o(DOM(thirdRow, 'cells').map(c=>c.value)).deepEquals(secondRowContent)
+			const targetRow = DOM('rows')[anchorPlace + 1]
+			const targetCell = DOM(targetRow, 'cells')[0]
 
-		o(DOM('rows').map(row=>DOM(row, 'cells').length).allEqual()).equals(true)
+			DOM('createRow')[anchorPlace].dispatchEvent(new Event('click'))
+			await frame()
+
+			o(targetCell.value).equals(initialAnchorCellValue)
+
+			anchorCell.value = 'aaa'
+			anchorCell.dispatchEvent(new Event('input'))
+			await frame()
+
+			o(anchorCell.value).equals('aaa')
+
+			DOM('createRow')[anchorPlace].dispatchEvent(new Event('click'))
+			await frame()
+
+			o(anchorCell.value).equals('')
+			o(targetCell.value).equals('aaa')
+		})
 	})
 	o('on click removeRow', async ()=>{
 		const initialNumberOfRows = DOM('rows').length
@@ -66,17 +94,22 @@ o.spec('In browser', ()=>{
 
 		o(DOM('rows').length).equals(initialNumberOfRows - 1)
 	})
-	o('on click createColumn', async ()=>{
-		const initialNumberOfColumns = DOM('columns').length
-		const firstColumnContent = DOM('rows').map(r=>DOM(r, 'cells')[0]).map(c=>c.value)
-		const secondColumnContent = DOM('rows').map(r=>DOM(r, 'cells')[1]).map(c=>c.value)
-
-		DOM('createColumn')[1].dispatchEvent(new Event('click'))
-		await frame()
-
-		o(DOM('columns').length).equals(initialNumberOfColumns + 1)
-		o(DOM('rows').map(r=>DOM(r, 'cells')[0]).map(c=>c.value)).deepEquals(firstColumnContent)
-		o(DOM('rows').map(r=>DOM(r, 'cells')[2]).map(c=>c.value)).deepEquals(secondColumnContent)
+	o.spec('on click createColumn', ()=>{
+		o('creates column', async ()=>{
+			const initialNumberOfColumns = DOM('columns').length
+			const firstColumnContent = DOM('rows').map(r=>DOM(r, 'cells')[0]).map(c=>c.value)
+			const secondColumnContent = DOM('rows').map(r=>DOM(r, 'cells')[1]).map(c=>c.value)
+	
+			DOM('createColumn')[1].dispatchEvent(new Event('click'))
+			await frame()
+	
+			o(DOM('columns').length).equals(initialNumberOfColumns + 1)
+			o(DOM('rows').map(r=>DOM(r, 'cells')[0]).map(c=>c.value)).deepEquals(firstColumnContent)
+			o(DOM('rows').map(r=>DOM(r, 'cells')[2]).map(c=>c.value)).deepEquals(secondColumnContent)
+		})
+		o('moves data', ()=>{
+			
+		})
 	})
 	o.spec('on createRow and createColumn', ()=>{
 		o('creates both', async ()=>{
@@ -89,22 +122,8 @@ o.spec('In browser', ()=>{
 	
 			o(DOM('rows').map(r=>DOM(r, 'cells').length)).deepEquals((initialNumberOfRows + 1).map(n=>initialNumberOfColumns + 1))
 		})
-		o('moves data accordingly', async ()=>{
-			DOM('createRow')[0].dispatchEvent(new Event('click'))
-			await frame()
-			
-			const firstRow = DOM('rows')[0]
-			DOM(firstRow, 'cells')[0].value = 'aaa'
-			DOM(firstRow, 'cells')[0].dispatchEvent(new Event('input'))
-			await frame()
+		o('moves data', ()=>{
 
-			o(DOM(firstRow, 'cells')[0].value).equals('aaa')
-
-			DOM('createColumn')[0].dispatchEvent(new Event('click'))
-			await frame()
-
-			o(DOM(firstRow, 'cells')[0].value).equals('')
-			o(DOM(firstRow, 'cells')[1].value).equals('aaa')
 		})
 	})
 	o('on click removeColumn', async ()=>{
