@@ -44,7 +44,7 @@ Table.component = {
 							}, '+')
 						]),
 						row.getCells().pad({}, table.getWidth()).map(cell=>{
-							return m(`td[columnPlace=${place}]`, [
+							return m(`td`, [
 								m('textarea', {
 									oninput(event){
 										cell.data = event.target.value

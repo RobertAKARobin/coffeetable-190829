@@ -21,7 +21,7 @@ function DOM(){
 	}else{
 		[selector] = arguments
 	}
-	return Array.from((root || document).querySelectorAll(componentToDOMMapping[selector]))
+	return Array.from((root || document).querySelectorAll(componentToDOMMapping[selector] || selector))
 }
 o.spec('In browser', ()=>{
 	const input = {}
@@ -81,18 +81,15 @@ o.spec('In browser', ()=>{
 	o.spec('on createRow and createColumn', ()=>{
 		o('creates both', async ()=>{
 			const initialNumberOfColumns = DOM('columns').length
+			const initialNumberOfRows = DOM('rows').length
 	
 			DOM('createRow')[1].dispatchEvent(new Event('click'))
 			DOM('createColumn')[1].dispatchEvent(new Event('click'))
 			await frame()
 	
-			o(DOM(DOM('rows')[1], 'cells').length).equals(initialNumberOfColumns + 1)
-			o(DOM('rows').map(r=>DOM(r, 'cells').length).allEqual()).equals(true)
-	
-			o(initialNumberOfColumns.map(p=>DOM(`columnPlace=${p}`).length).allEqual()).equals(true)
-			// TODO: Test is inaccurate
+			o(DOM('rows').map(r=>DOM(r, 'cells').length)).deepEquals((initialNumberOfRows + 1).map(n=>initialNumberOfColumns + 1))
 		})
-		o.only('moves data accordingly', async ()=>{
+		o('moves data accordingly', async ()=>{
 			DOM('createRow')[0].dispatchEvent(new Event('click'))
 			await frame()
 			
