@@ -1,61 +1,28 @@
 {
-	"rows": [
+	"config": [
+		"name",
+		"age",
+		"cats",
+		"isFriendly"
+	],
+	"records": [
 		{
-			"cells": [
-				{
-					"data": "ColA"
-				},
-				{
-					"data": "ColB"
-				},
-				{
-					"data": "ColC"
-				},
-				{
-					"data": "ColD"
-				},
-				{
-					"data": "ColE"
-				}
-			]
+			"name": "Alice",
+			"age": 40,
+			"cats": 3,
+			"isFriendly": true
 		},
 		{
-			"cells": [
-				{
-					"data": "aaa"
-				},
-				{
-					"data": "bbb"
-				},
-				{
-					"data": "ccc"
-				},
-				{
-					"data": "ddd"
-				},
-				{
-					"data": "eee"
-				}
-			]
+			"name": "Bob",
+			"age": 20,
+			"cats": 0,
+			"isFriendly": false
 		},
 		{
-			"cells": [
-				{
-					"data": "fff"
-				},
-				{
-					"data": "ggg"
-				},
-				{
-					"data": "hhh"
-				},
-				{
-					"data": "iii"
-				},
-				{
-					"data": "jjj"
-				}
-			]
+			"name": "Carol",
+			"age": 10,
+			"cats": 1,
+			"isFriendly": true
 		}
 	]
 }
