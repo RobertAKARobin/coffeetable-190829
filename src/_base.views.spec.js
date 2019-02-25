@@ -1,19 +1,16 @@
 function frame(){
 	return new Promise (requestAnimationFrame)
 }
-const componentToDOMMapping = {
-	'collections': 'table',
-	'records': 'tr'
-}
-function DOM(){
-	let root, selector
-	if(arguments.length > 1){
-		[root, selector] = arguments
+function $(selector){
+	const result = document.querySelectorAll(selector)
+	if(result.length === 1){
+		result[0].length = 1
+		return result[0]
 	}else{
-		[selector] = arguments
+		return Array.from(result)
 	}
-	return Array.from((root || document).querySelectorAll(componentToDOMMapping[selector] || selector))
 }
+
 o.spec('In browser', ()=>{
 	const input = {}
 	o.beforeEach(()=>{
@@ -21,12 +18,12 @@ o.spec('In browser', ()=>{
 		input.records = input.collection.records
 		
 		const collection = Collection.create(Data)
-		m.mount(document.getElementById('app-output'), {
+		m.mount($('#app-output'), {
 			view: ()=>m(Collection.component, {collection})
 		})
 	})
 	o('on load', () => {
-		o(DOM('collections').length).equals(1)
-		o(DOM('records').length).equals(input.records.length)
+		o($('[collection]').length).equals(1)
+		o($('[record]').length).equals(input.records.length)
 	})
 })
