@@ -1,4 +1,16 @@
 function Collection(input = {}){
+	Collection.definePrivateScopeAccessors.call(this)
+	if(input.records){
+		if(input.records instanceof Array){
+			input.records.forEach(record=>{
+				this.createRecord(record)
+			})
+		}else{
+			this.createRecord(input.records)
+		}
+	}
+}
+Collection.definePrivateScopeAccessors = function(){
 	const pvt = {
 		records: [],
 		config: []
@@ -25,15 +37,6 @@ function Collection(input = {}){
 			}
 		}
 	})
-	if(input.records){
-		if(input.records instanceof Array){
-			input.records.forEach(record=>{
-				this.createRecord(record)
-			})
-		}else{
-			this.createRecord(input.records)
-		}
-	}
 }
 Object.defineProperties(Collection, {
 	create: {

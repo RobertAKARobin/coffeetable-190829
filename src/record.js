@@ -1,4 +1,7 @@
 function Record(input = {}){
+	Record.definePrivateScopeAccessors.call(this)
+}
+Record.definePrivateScopeAccessors = function(){
 	const pvt = {
 		collection: undefined,
 		data: {}
@@ -26,9 +29,6 @@ function Record(input = {}){
 			}
 		}
 	})
-	if(input.data){
-		pvt.data = JSON.parse(JSON.stringify(pvt.data))
-	}
 }
 Object.defineProperties(Record, {
 	create: {
