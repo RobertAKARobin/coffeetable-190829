@@ -22,6 +22,15 @@ Object.defineProperties(Record, {
 				data: {}
 			}
 			const record = Object.create(Record.proto, {
+				addToCollection: {
+					value: function(collection){
+						if(collection){
+							pvt.collection = collection
+							collection.addRecord(this)
+						}
+						return this
+					}
+				},
 				getCollection: {
 					value: function(){
 						return pvt.collection

@@ -4,6 +4,13 @@ Object.defineProperties(Collection, {
 			class: {
 				value: Collection
 			},
+			createRecord: {
+				value: function(input){
+					const record = Record.create(input)
+					this.addRecord(record)
+					return record
+				}
+			},
 
 			toJSON: {
 				value: function(){
@@ -22,11 +29,21 @@ Object.defineProperties(Collection, {
 				config: []
 			}
 			const collection = Object.create(Collection.proto, {
-				createRecord: {
-					value: function(json){
-						const record = Record.create(json)
-						pvt.records.push(record)
-						return record
+				addRecord: {
+					value: function(record){
+						if(record === undefined || record === null){
+							return this
+						}else if(record.class !== Record){
+							throw new Error('Can only add Records')
+						}else{
+							if(record.getCollection() !== this){
+								record.addToCollection(this)
+							}
+							if(!pvt.records.includes(record)){
+								pvt.records.push(record)
+							}
+							return this
+						}
 					}
 				},
 				getRecords: {

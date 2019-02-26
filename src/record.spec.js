@@ -1,4 +1,5 @@
 o.spec('Record', ()=>{
+	const _ = {}
 	o.spec('.create', ()=>{
 		o('()', ()=>{
 
@@ -32,6 +33,24 @@ o.spec('Record', ()=>{
 
 		})
 	})
-})
-o.spec('@record', ()=>{
+	o.spec('@record', ()=>{
+		o.beforeEach(()=>{
+			_.record = Record.create()
+		})
+		o.spec('.addToCollection', ()=>{
+			o.beforeEach(()=>{
+				_.collection = Collection.create()
+			})
+			o('()', ()=>{
+				o(_.record.addToCollection()).equals(_.record)
+				o(_.record.getCollection()).equals(undefined)
+				o(_.collection.getRecords().includes(_.record)).equals(false)
+			})
+			o('(@collection)', ()=>{
+				o(_.record.addToCollection(_.collection)).equals(_.record)
+				o(_.record.getCollection()).equals(_.collection)
+				o(_.collection.getRecords().includes(_.record)).equals(true)
+			})
+		})
+	})
 })

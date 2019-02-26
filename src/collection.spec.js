@@ -1,4 +1,5 @@
 o.spec('Collection', ()=>{
+	const _ = {}
 	o.spec('.create', ()=>{
 		o('()', ()=>{
 			const collection = Collection.create()
@@ -31,35 +32,49 @@ o.spec('Collection', ()=>{
 		o('(@object{a: {b: self}})', ()=>{
 
 		})
-	})	
-})
-o.spec('@collection', ()=>{
-	const _ = {}
-	o.beforeEach(()=>{
-		_.collection = Collection.create()
 	})
-	o.spec('.createRecord', ()=>{
+	o.spec('@collection', ()=>{
 		o.beforeEach(()=>{
-			_.initialNumberOfRecords = _.collection.getRecords().length
+			_.collection = Collection.create()
 		})
-		o('()', ()=>{
-			const record = _.collection.createRecord()
-			o(record.collection).equals(_.collection)
-			o(_.collection.getRecords().includes(record)).equals(true)
-			o(_.collection.getRecords().indexOf(record)).equals(_.initialNumberOfRecords)
-			o(_.collection.getRecords().length).equals(_.initialNumberOfRecords + 1)
+		o.spec('.addRecord', ()=>{
+			o.beforeEach(()=>{
+				_.initialRecords = _.collection.getRecords()
+			})
+			o('()', ()=>{
+				o(_.collection.addRecord()).equals(_.collection)
+				o(_.collection.getRecords()).deepEquals(_.initialRecords)
+			})
+			o('(@record)', ()=>{
+				const record = Record.create()
+				o(_.collection.addRecord(record)).equals(_.collection)
+				o(_.collection.getRecords()).deepEquals([record])
+			})
+			o('(@notRecord)', ()=>{
+				o(()=>_.collection.addRecord('ayy')).throws(Error)
+				o(_.collection.getRecords()).deepEquals(_.initialRecords)
+			})
 		})
-		o('(self)', ()=>{
-			
-		})
-		o('(@array[])', ()=>{
-
-		})
-		o('(@array[@record])', ()=>{
-
-		})
-		o('(@array[self.@record])', ()=>{
-
+		o.spec('.createRecord', ()=>{
+			o('()', ()=>{
+				const record = _.collection.createRecord()
+				o(record.getCollection()).equals(_.collection)
+				o(_.collection.getRecords().includes(record)).equals(true)
+				o(_.collection.getRecords().indexOf(record)).equals(_.initialRecords.length)
+				o(_.collection.getRecords().length).equals(_.initialRecords.length + 1)
+			})
+			o('(self)', ()=>{
+	
+			})
+			o('(@array[])', ()=>{
+	
+			})
+			o('(@array[@record])', ()=>{
+	
+			})
+			o('(@array[self.@record])', ()=>{
+	
+			})
 		})
 	})
 })
