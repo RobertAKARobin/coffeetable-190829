@@ -3,7 +3,7 @@ o.spec('Collection', ()=>{
 	o.spec('.create', ()=>{
 		o('()', ()=>{
 			const collection = Collection.create()
-			o(collection.class).equals(Collection)
+			o(collection.constructor).equals(Collection)
 		})
 		o('(@number)', ()=>{
 

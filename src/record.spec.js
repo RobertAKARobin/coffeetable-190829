@@ -2,14 +2,14 @@ o.spec('Record', ()=>{
 	const _ = {}
 	o.spec('.create', ()=>{
 		o('()', ()=>{
-
+			const record = Record.create()
+			o(record.constructor).equals(Record)
 		})
 		o('(@number)', ()=>{
 
 		})
 		o('(@record)', ()=>{
-			const originalRecord = Record.create()
-			const newRecord = Record.create(originalRecord)
+			
 		})
 		o('(@array[])', ()=>{
 
