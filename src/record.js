@@ -14,7 +14,7 @@ Record.definePrivateScopeAccessors = function(){
 					collection.addRecord(this)
 					return this
 				}else{
-					throw new Error(`@record.addToCollection will not accept an object of type ${collection.constructor}`)
+					throw new Error(`@record.addToCollection will not accept an object of type ${collection.constructor.name}`)
 				}
 			}
 		},
@@ -26,6 +26,20 @@ Record.definePrivateScopeAccessors = function(){
 		getData: {
 			value: function(){
 				return JSON.parse(JSON.stringify(pvt.data))
+			}
+		},
+		setData: {
+			value: function(input){
+				/*
+				if empty
+					pvt.data = {}
+				if object
+					pvt.data = input
+				if primitive
+					pvt.data = {value: input}
+
+				Should I just expose pvt.data?
+				*/
 			}
 		}
 	})

@@ -6,7 +6,7 @@ o.spec('Collection', ()=>{
 			o(collection.constructor).equals(Collection)
 		})
 		o('(@number)', ()=>{
-			const collection = Collection.create(3)
+
 		})
 		o('(@collection)', ()=>{
 

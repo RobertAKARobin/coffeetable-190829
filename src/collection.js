@@ -27,7 +27,7 @@ Collection.definePrivateScopeAccessors = function(){
 					}
 					return this
 				}else{
-					throw new Error(`@collection.addRecord will not accept an object of type ${record.constructor}`)
+					throw new Error(`@collection.addRecord will not accept an object of type ${record.constructor.name}`)
 				}
 			}
 		},

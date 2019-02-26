@@ -4,23 +4,14 @@ o.spec('Record', ()=>{
 		o('()', ()=>{
 			const record = Record.create()
 			o(record.constructor).equals(Record)
+			o(record.getCollection()).equals(undefined)
+			o(record.getData()).deepEquals({})
 		})
 		o('(@number)', ()=>{
-
+			const record = Record.create(3)
+			o(record.getData()).deepEquals({_: 3})
 		})
 		o('(@record)', ()=>{
-
-		})
-		o('(@array[])', ()=>{
-
-		})
-		o('(@array[@number])', ()=>{
-
-		})
-		o('(@array[@record])', ()=>{
-
-		})
-		o('(@array[@self])', ()=>{
 
 		})
 		o('(@object)', ()=>{
