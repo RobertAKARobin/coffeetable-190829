@@ -6,11 +6,7 @@ function Collection(input = {}){
 	Object.defineProperties(this, {
 		addRecord: {
 			value: function(record){
-				if(record === undefined || record === null){
-					return this
-				}else if(! record instanceof Record){
-					throw new Error('Can only add Records')
-				}else{
+				if(record instanceof Record){
 					if(record.getCollection() !== this){
 						record.addToCollection(this)
 					}
@@ -18,6 +14,8 @@ function Collection(input = {}){
 						pvt.records.push(record)
 					}
 					return this
+				}else{
+					throw new Error(`@collection.addRecord will not accept an object of type ${record.constructor}`)
 				}
 			}
 		},

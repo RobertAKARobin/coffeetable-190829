@@ -6,11 +6,13 @@ function Record(input = {}){
 	Object.defineProperties(this, {
 		addToCollection: {
 			value: function(collection){
-				if(collection){
+				if(collection instanceof Collection){
 					pvt.collection = collection
 					collection.addRecord(this)
+					return this
+				}else{
+					throw new Error(`@record.addToCollection will not accept an object of type ${collection.constructor}`)
 				}
-				return this
 			}
 		},
 		getCollection: {

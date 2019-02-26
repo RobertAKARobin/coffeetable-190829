@@ -41,16 +41,13 @@ o.spec('Collection', ()=>{
 			o.beforeEach(()=>{
 				_.initialRecords = _.collection.getRecords()
 			})
-			o('()', ()=>{
-				o(_.collection.addRecord()).equals(_.collection)
-				o(_.collection.getRecords()).deepEquals(_.initialRecords)
-			})
 			o('(@record)', ()=>{
 				const record = Record.create()
 				o(_.collection.addRecord(record)).equals(_.collection)
 				o(_.collection.getRecords()).deepEquals([record])
 			})
 			o('(@notRecord)', ()=>{
+				o(()=>_.collection.addRecord()).throws(Error)
 				o(()=>_.collection.addRecord('ayy')).throws(Error)
 				o(_.collection.getRecords()).deepEquals(_.initialRecords)
 			})

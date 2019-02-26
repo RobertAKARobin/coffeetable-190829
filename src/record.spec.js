@@ -9,7 +9,7 @@ o.spec('Record', ()=>{
 
 		})
 		o('(@record)', ()=>{
-			
+
 		})
 		o('(@array[])', ()=>{
 
@@ -41,15 +41,15 @@ o.spec('Record', ()=>{
 			o.beforeEach(()=>{
 				_.collection = Collection.create()
 			})
-			o('()', ()=>{
-				o(_.record.addToCollection()).equals(_.record)
-				o(_.record.getCollection()).equals(undefined)
-				o(_.collection.getRecords().includes(_.record)).equals(false)
-			})
 			o('(@collection)', ()=>{
 				o(_.record.addToCollection(_.collection)).equals(_.record)
 				o(_.record.getCollection()).equals(_.collection)
 				o(_.collection.getRecords().includes(_.record)).equals(true)
+			})
+			o('(@notCollection)', ()=>{
+				o(()=>_.record.addToCollection()).throws(Error)
+				o(()=>_.record.addToCollection('ayy')).throws(Error)
+				o(_.record.getCollection()).equals(undefined)
 			})
 		})
 	})
