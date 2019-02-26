@@ -18,9 +18,15 @@ Object.defineProperties(Record, {
 	create: {
 		value: function(input = {}){
 			const pvt = {
+				collection: undefined,
 				data: {}
 			}
 			const record = Object.create(Record.proto, {
+				getCollection: {
+					value: function(){
+						return pvt.collection
+					}
+				},
 				getData: {
 					value: function(){
 						return JSON.parse(JSON.stringify(pvt.data))
