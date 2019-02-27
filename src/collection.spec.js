@@ -60,18 +60,6 @@ o.spec('Collection', ()=>{
 				o(_.collection.getRecords().indexOf(record)).equals(_.initialRecords.length)
 				o(_.collection.getRecords().length).equals(_.initialRecords.length + 1)
 			})
-			o('(self)', ()=>{
-	
-			})
-			o('(@array[])', ()=>{
-	
-			})
-			o('(@array[@record])', ()=>{
-	
-			})
-			o('(@array[self.@record])', ()=>{
-	
-			})
 		})
 	})
 })

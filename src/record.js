@@ -1,5 +1,6 @@
-function Record(input = {}){
+function Record(input){
 	Record.definePrivateScopeAccessors.call(this)
+	this.setData(input)
 }
 Record.definePrivateScopeAccessors = function(){
 	const pvt = {
@@ -25,21 +26,12 @@ Record.definePrivateScopeAccessors = function(){
 		},
 		getData: {
 			value: function(){
-				return JSON.parse(JSON.stringify(pvt.data))
+				return pvt.data
 			}
 		},
 		setData: {
 			value: function(input){
-				/*
-				if empty
-					pvt.data = {}
-				if object
-					pvt.data = input
-				if primitive
-					pvt.data = {value: input}
-
-				Should I just expose pvt.data?
-				*/
+				pvt.data = input
 			}
 		}
 	})

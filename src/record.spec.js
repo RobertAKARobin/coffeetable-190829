@@ -5,23 +5,37 @@ o.spec('Record', ()=>{
 			const record = Record.create()
 			o(record.constructor).equals(Record)
 			o(record.getCollection()).equals(undefined)
-			o(record.getData()).deepEquals({})
+			o(record.getData()).deepEquals(undefined)
 		})
 		o('(@number)', ()=>{
-			const record = Record.create(3)
-			o(record.getData()).deepEquals({_: 3})
+			const input = 3
+			const record = Record.create(input)
+			o(record.getData()).equals(input)
+		})
+		o('(@string)', ()=>{
+			const input = 'ayy'
+			const record = Record.create(input)
+			o(record.getData()).equals(input)
 		})
 		o('(@record)', ()=>{
-
+			const oldRecord = Record.create({foo: 'bar'})
+			const newRecord = Record.create(oldRecord)
+			o(newRecord.getData()).equals(oldRecord)
+		})
+		o('(@array)', ()=>{
+			const input = []
+			const record = Record.create(input)
+			o(record.getData()).equals(input)
 		})
 		o('(@object)', ()=>{
-
+			const input = {}
+			const record = Record.create(input)
+			o(record.getData()).equals(input)
 		})
 		o('(@object{data})', ()=>{
-
-		})
-		o('(@object{a: {b: self}})', ()=>{
-
+			const input = {foo: 'bar'}
+			const record = Record.create(input)
+			o(record.getData()).equals(input)
 		})
 	})
 	o.spec('@record', ()=>{
