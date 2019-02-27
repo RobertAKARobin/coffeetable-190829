@@ -39,16 +39,34 @@ o.spec('Collection', ()=>{
 			initialRecords = collection.getRecords()
 		})
 		o.spec('.addRecord', ()=>{
-			o('(@record)', ()=>{
-				const record = Record.create()
-				o(collection.addRecord(record)).equals(collection)
-				o(collection.getRecords()).deepEquals([record])
-				o(collection.getRecords().length).equals(initialRecords.length + 1)
+			o.spec('when record has no existing collection', ()=>{
+				o('(@record)', ()=>{
+					const record = Record.create()
+					o(collection.addRecord(record)).equals(collection)
+					o(collection.getRecords()).deepEquals([record])
+					o(collection.getRecords().length).equals(initialRecords.length + 1)
+				})
+				o('(@notRecord)', ()=>{
+					o(()=>collection.addRecord()).throws(Error)
+					o(()=>collection.addRecord('ayy')).throws(Error)
+					o(collection.getRecords()).deepEquals(initialRecords)
+				})
 			})
-			o('(@notRecord)', ()=>{
-				o(()=>collection.addRecord()).throws(Error)
-				o(()=>collection.addRecord('ayy')).throws(Error)
-				o(collection.getRecords()).deepEquals(initialRecords)
+			o.spec('when record has existing collection', ()=>{
+				let firstCollection, secondCollection, record
+				o.beforeEach(()=>{
+					firstCollection = collection
+					secondCollection = Collection.create()
+					record = Record.create()
+					collection.addRecord(record)
+				})
+				o('(@record)', ()=>{
+					secondCollection.addRecord(record)
+					o(firstCollection.getRecords().includes(record)).equals(false)
+					o(record.getCollection()).notEquals(firstCollection)
+					o(secondCollection.getRecords().includes(record)).equals(true)
+					o(record.getCollection()).equals(secondCollection)
+				})
 			})
 		})
 		o.spec('.createRecord', ()=>{
@@ -61,9 +79,11 @@ o.spec('Collection', ()=>{
 			})
 		})
 		o.spec('.removeRecord', ()=>{
-			o('() when no existing records', ()=>{
-				o(collection.removeRecord()).equals(collection)
-				o(collection.getRecords()).deepEquals(initialRecords)
+			o.spec('when no existing records', ()=>{
+				o('()', ()=>{
+					o(collection.removeRecord()).equals(collection)
+					o(collection.getRecords()).deepEquals(initialRecords)
+				})
 			})
 			o.spec('when has existing records', ()=>{
 				let record
