@@ -1,5 +1,4 @@
 o.spec('Record', ()=>{
-	const _ = {}
 	o.spec('.create', ()=>{
 		o('()', ()=>{
 			const record = Record.create()
@@ -18,9 +17,9 @@ o.spec('Record', ()=>{
 			o(record.getData()).equals(input)
 		})
 		o('(@record)', ()=>{
-			const oldRecord = Record.create({foo: 'bar'})
-			const newRecord = Record.create(oldRecord)
-			o(newRecord.getData()).equals(oldRecord)
+			const firstRecord = Record.create({foo: 'bar'})
+			const secondRecord = Record.create(firstRecord)
+			o(secondRecord.getData()).equals(firstRecord)
 		})
 		o('(@array)', ()=>{
 			const input = []
@@ -39,22 +38,40 @@ o.spec('Record', ()=>{
 		})
 	})
 	o.spec('@record', ()=>{
+		let record
 		o.beforeEach(()=>{
-			_.record = Record.create()
+			record = Record.create()
 		})
-		o.spec('.addToCollection', ()=>{
-			o.beforeEach(()=>{
-				_.collection = Collection.create()
+		o.spec('.setCollection', ()=>{
+			o('()', ()=>{
+				o(record.setCollection()).equals(record)
+				o(record.getCollection()).equals(undefined)
 			})
 			o('(@collection)', ()=>{
-				o(_.record.addToCollection(_.collection)).equals(_.record)
-				o(_.record.getCollection()).equals(_.collection)
-				o(_.collection.getRecords().includes(_.record)).equals(true)
+				const collection = Collection.create()
+				o(record.setCollection(collection).getCollection()).equals(collection)
+				o(collection.getRecords().includes(record)).equals(true)
 			})
-			o('(@notCollection)', ()=>{
-				o(()=>_.record.addToCollection()).throws(Error)
-				o(()=>_.record.addToCollection('ayy')).throws(Error)
-				o(_.record.getCollection()).equals(undefined)
+			o('(@number)', ()=>{
+				o(()=>record.setCollection('ayy')).throws(Error)
+				o(record.getCollection()).equals(undefined)
+			})
+			o.spec('when has existing collection', ()=>{
+				let firstCollection
+				o.beforeEach(()=>{
+					firstCollection = Collection.create()
+				})
+				o('()', ()=>{
+					record.setCollection(firstCollection)
+					o(record.setCollection(firstCollection).setCollection()).equals(record)
+				})
+				o('(@otherCollection)', ()=>{
+					const secondCollection = Collection.create()
+					o(record.setCollection(firstCollection).setCollection(secondCollection)).equals(record)
+					o(record.getCollection()).equals(secondCollection)
+					o(firstCollection.getRecords().includes(record)).equals(false)
+					o(secondCollection.getRecords().includes(record)).equals(true)
+				})
 			})
 		})
 	})

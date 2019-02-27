@@ -20,7 +20,7 @@ Collection.definePrivateScopeAccessors = function(){
 			value: function(record){
 				if(record instanceof Record){
 					if(record.getCollection() !== this){
-						record.addToCollection(this)
+						record.setCollection(this)
 					}
 					if(!pvt.records.includes(record)){
 						pvt.records.push(record)
@@ -34,6 +34,19 @@ Collection.definePrivateScopeAccessors = function(){
 		getRecords: {
 			value: function(){
 				return Array.from(pvt.records)
+			}
+		},
+		removeRecord: {
+			value: function(record){
+				if(pvt.records.includes(record)){
+					pvt.records.remove(record)
+				}
+				if(record instanceof Record){
+					if(record.getCollection() === this){
+						record.setCollection()
+					}
+				}
+				return this
 			}
 		}
 	})

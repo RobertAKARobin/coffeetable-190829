@@ -8,20 +8,31 @@ Record.definePrivateScopeAccessors = function(){
 		data: {}
 	}
 	Object.defineProperties(this, {
-		addToCollection: {
-			value: function(collection){
-				if(collection instanceof Collection){
+		getCollection: {
+			value: function(){
+				return pvt.collection
+			}
+		},
+		setCollection: {
+			value: function(input){
+				if(input === undefined){
+					const collection = pvt.collection
+					pvt.collection = undefined
+					if(collection instanceof Collection){
+						collection.removeRecord(this)
+					}
+					return this
+				}else if(input instanceof Collection){
+					const collection = input
+					if(pvt.collection){
+						pvt.collection.removeRecord(this)
+					}
 					pvt.collection = collection
 					collection.addRecord(this)
 					return this
 				}else{
-					throw new Error(`@record.addToCollection will not accept an object of type ${collection.constructor.name}`)
+					throw new Error(`@record.setCollection will not accept an object of type ${collection.constructor.name}`)
 				}
-			}
-		},
-		getCollection: {
-			value: function(){
-				return pvt.collection
 			}
 		},
 		getData: {
