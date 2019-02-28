@@ -69,7 +69,7 @@ Object.defineProperties(Collection.prototype, {
 	toJSON: {
 		value: function(){
 			return {
-				rows: this.getRecords()
+				records: this.getRecords()
 			}
 		}
 	}

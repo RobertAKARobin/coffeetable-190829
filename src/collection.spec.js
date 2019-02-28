@@ -39,6 +39,11 @@ o.spec('Collection', ()=>{
 			initialRecords = collection.getRecords()
 		})
 		o.spec('.addRecord', ()=>{
+			o('()', ()=>{
+				o(() => collection.addRecord()).throws(Error)
+				o(() => collection.addRecord('ayy')).throws(Error)
+				o(collection.getRecords()).deepEquals(initialRecords)
+			})
 			o.spec('when record has no existing collection', ()=>{
 				o('(@record)', ()=>{
 					const record = Record.create()
@@ -46,26 +51,23 @@ o.spec('Collection', ()=>{
 					o(collection.getRecords()).deepEquals([record])
 					o(collection.getRecords().length).equals(initialRecords.length + 1)
 				})
-				o('(@notRecord)', ()=>{
-					o(()=>collection.addRecord()).throws(Error)
-					o(()=>collection.addRecord('ayy')).throws(Error)
-					o(collection.getRecords()).deepEquals(initialRecords)
-				})
 			})
 			o.spec('when record has existing collection', ()=>{
-				let firstCollection, secondCollection, record
-				o.beforeEach(()=>{
-					firstCollection = collection
-					secondCollection = Collection.create()
-					record = Record.create()
-					collection.addRecord(record)
-				})
 				o('(@record)', ()=>{
+					const firstCollection = collection
+					const secondCollection = Collection.create()
+					const record = Record.create()
+					firstCollection.addRecord(record)
 					secondCollection.addRecord(record)
 					o(firstCollection.getRecords().includes(record)).equals(false)
 					o(record.getCollection()).notEquals(firstCollection)
 					o(secondCollection.getRecords().includes(record)).equals(true)
 					o(record.getCollection()).equals(secondCollection)
+				})
+				o('(@recordThatBelongsToCollection)', ()=>{
+					const record = collection.createRecord()
+					collection.addRecord(record)
+					o(collection.getRecords()).deepEquals([record])
 				})
 			})
 		})
@@ -76,6 +78,26 @@ o.spec('Collection', ()=>{
 				o(collection.getRecords().includes(record)).equals(true)
 				o(collection.getRecords().indexOf(record)).equals(initialRecords.length)
 				o(collection.getRecords().length).equals(initialRecords.length + 1)
+			})
+			o('(@object)', ()=>{
+				const input = {foo: 'bar'}
+				const record = collection.createRecord(input)
+				o(collection.getRecords()).deepEquals([record])
+				o(record.getData()).equals(input)
+			})
+			o('(@record)', () => {
+				const firstRecord = Record.create()
+				const secondRecord = collection.createRecord(firstRecord)
+				o(secondRecord.getCollection()).equals(collection)
+				o(secondRecord.getData()).equals(firstRecord)
+				o(collection.getRecords()).deepEquals([secondRecord])
+			})
+			o('(@recordThatBelongsToCollection)', ()=>{
+				const firstRecord = collection.createRecord()
+				const secondRecord = collection.createRecord(firstRecord)
+				o(secondRecord.getCollection()).equals(collection)
+				o(secondRecord.getData()).equals(firstRecord)
+				o(collection.getRecords()).deepEquals([firstRecord, secondRecord])
 			})
 		})
 		o.spec('.removeRecord', ()=>{
