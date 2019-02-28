@@ -47,7 +47,8 @@ o.spec('Collection', ()=>{
 			o.spec('when record has no existing collection', ()=>{
 				o('(@record)', ()=>{
 					const record = Record.create()
-					o(collection.addRecord(record)).equals(collection)
+					const returnValue = collection.addRecord(record)
+					o(returnValue).equals(collection)
 					o(collection.getRecords()).deepEquals([record])
 					o(collection.getRecords().length).equals(initialRecords.length + 1)
 				})
@@ -59,9 +60,9 @@ o.spec('Collection', ()=>{
 					const record = Record.create()
 					firstCollection.addRecord(record)
 					secondCollection.addRecord(record)
-					o(firstCollection.getRecords().includes(record)).equals(false)
+					o(firstCollection.getRecords()).deepEquals([])
 					o(record.getCollection()).notEquals(firstCollection)
-					o(secondCollection.getRecords().includes(record)).equals(true)
+					o(secondCollection.getRecords()).deepEquals([record])
 					o(record.getCollection()).equals(secondCollection)
 				})
 				o('(@recordThatBelongsToCollection)', ()=>{
@@ -75,7 +76,7 @@ o.spec('Collection', ()=>{
 			o('()', ()=>{
 				const record = collection.createRecord()
 				o(record.getCollection()).equals(collection)
-				o(collection.getRecords().includes(record)).equals(true)
+				o(collection.getRecords()).deepEquals([record])
 				o(collection.getRecords().indexOf(record)).equals(initialRecords.length)
 				o(collection.getRecords().length).equals(initialRecords.length + 1)
 			})
@@ -103,7 +104,8 @@ o.spec('Collection', ()=>{
 		o.spec('.removeRecord', ()=>{
 			o.spec('when no existing records', ()=>{
 				o('()', ()=>{
-					o(collection.removeRecord()).equals(collection)
+					const returnValue = collection.removeRecord()
+					o(returnValue).equals(collection)
 					o(collection.getRecords()).deepEquals(initialRecords)
 				})
 			})
@@ -114,17 +116,17 @@ o.spec('Collection', ()=>{
 					initialRecords = collection.getRecords()
 				})
 				o('()', ()=>{
-					o(collection.removeRecord()).equals(collection)
+					const returnValue = collection.removeRecord()
+					o(returnValue).equals(collection)
 					o(collection.getRecords()).deepEquals(initialRecords)
 				})
 				o('(@notRecord)', ()=>{
-					o(collection.removeRecord('ayy')).equals(collection)
+					collection.removeRecord('ayy')
 					o(collection.getRecords()).deepEquals(initialRecords)
 				})
 				o('(@record)', ()=>{
-					o(collection.removeRecord(record)).equals(collection)
-					o(collection.getRecords()).notDeepEquals(initialRecords)
-					o(collection.getRecords().includes(record)).equals(false)
+					collection.removeRecord(record)
+					o(collection.getRecords()).deepEquals([])
 				})
 			})
 		})

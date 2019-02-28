@@ -44,13 +44,15 @@ o.spec('Record', ()=>{
 		})
 		o.spec('.setCollection', ()=>{
 			o('()', ()=>{
-				o(record.setCollection()).equals(record)
+				const returnValue = record.setCollection()
+				o(returnValue).equals(record)
 				o(record.getCollection()).equals(undefined)
 			})
 			o('(@collection)', ()=>{
 				const collection = Collection.create()
-				o(record.setCollection(collection).getCollection()).equals(collection)
-				o(collection.getRecords().includes(record)).equals(true)
+				record.setCollection(collection)
+				o(record.getCollection()).equals(collection)
+				o(collection.getRecords()).deepEquals([record])
 			})
 			o('(@number)', ()=>{
 				o(()=>record.setCollection('ayy')).throws(Error)
@@ -63,14 +65,22 @@ o.spec('Record', ()=>{
 				})
 				o('()', ()=>{
 					record.setCollection(firstCollection)
-					o(record.setCollection(firstCollection).setCollection()).equals(record)
+					record.setCollection()
+					o(record.getCollection()).equals(undefined)
+				})
+				o('(@sameCollection)', ()=>{
+					record.setCollection(firstCollection)
+					record.setCollection(firstCollection)
+					o(record.getCollection()).equals(firstCollection)
+					o(firstCollection.getRecords()).deepEquals([record])
 				})
 				o('(@otherCollection)', ()=>{
 					const secondCollection = Collection.create()
-					o(record.setCollection(firstCollection).setCollection(secondCollection)).equals(record)
+					record.setCollection(firstCollection)
+					record.setCollection(secondCollection)
 					o(record.getCollection()).equals(secondCollection)
-					o(firstCollection.getRecords().includes(record)).equals(false)
-					o(secondCollection.getRecords().includes(record)).equals(true)
+					o(firstCollection.getRecords()).deepEquals([])
+					o(secondCollection.getRecords()).deepEquals([record])
 				})
 			})
 		})
