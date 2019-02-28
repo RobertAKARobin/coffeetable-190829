@@ -3,33 +3,39 @@ o.spec('Collection', ()=>{
 		o('()', ()=>{
 			const collection = Collection.create()
 			o(collection.constructor).equals(Collection)
+			o(collection.getRecords()).deepEquals([])
 		})
 		o('(@number)', ()=>{
-
+			const input = 3
+			const collection = Collection.create(input)
+			o(collection.getRecords().length).equals(1)
+			o(collection.getRecords().first().getData()).equals(input)
 		})
 		o('(@collection)', ()=>{
-
+			const inputData = [1, 2, 3]
+			const input = Collection.create(inputData)
+			const collection = Collection.create(input)
+			o(collection.getRecords().map(r=>r.getData())).deepEquals(inputData)
 		})
 		o('(@array[])', ()=>{
-
+			const input = []
+			const collection = Collection.create(input)
+			o(collection.getRecords()).deepEquals([])
 		})
 		o('(@array[@number])', ()=>{
-
+			const input = [1, 2, 3]
+			const collection = Collection.create(input)
+			o(collection.getRecords().map(r=>r.getData())).deepEquals(input)
 		})
 		o('(@array[@collection])', ()=>{
-
-		})
-		o('(@array[self])', ()=>{
-
+			const input = [Collection.create(), Collection.create(), Collection.create()]
+			const collection = Collection.create(input)
+			// ?
 		})
 		o('(@object{})', ()=>{
-
-		})
-		o('(@object{data})', ()=>{
-
-		})
-		o('(@object{a: {b: self}})', ()=>{
-
+			const input = {}
+			const collection = Collection.create(input)
+			o(collection.getRecords().map(r=>r.getData())).deepEquals([input])
 		})
 	})
 	o.spec('@collection', ()=>{
