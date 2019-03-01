@@ -37,7 +37,6 @@ Record.definePrivateScopeAccessors = function(){
 					if(collection instanceof Collection){
 						collection.removeRecord(this)
 					}
-					return this
 				}else if(input instanceof Collection){
 					const collection = input
 					if(pvt.collection){
@@ -45,10 +44,10 @@ Record.definePrivateScopeAccessors = function(){
 					}
 					pvt.collection = collection
 					collection.addRecord(this)
-					return this
 				}else{
 					throw new Error(`@record.setCollection will not accept an object of type ${input ? input.constructor.name : input}`)
 				}
+				return this
 			}
 		},
 		getData: {

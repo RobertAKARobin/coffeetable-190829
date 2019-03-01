@@ -156,9 +156,10 @@ o.spec('Collection', ()=>{
 				})
 			})
 			o.spec('when has existing records', ()=>{
-				let record
+				let record, secondRecord
 				o.beforeEach(()=>{
 					record = collection.createRecord()
+					secondRecord = collection.createRecord()
 					initialRecords = collection.getRecords()
 				})
 				o('()', ()=>{
@@ -173,6 +174,14 @@ o.spec('Collection', ()=>{
 				o('(@record)', ()=>{
 					collection.removeRecord(record)
 					o(collection.getRecords()).deepEquals(initialRecords.without(record))
+				})
+				o('(@array[@record])', ()=>{
+					collection.removeRecord([secondRecord])
+					o(collection.getRecords()).deepEquals(initialRecords.without(secondRecord))
+				})
+				o('(self)', ()=>{
+					collection.removeRecord(collection)
+					o(collection.getRecords()).deepEquals([])
 				})
 			})
 		})
