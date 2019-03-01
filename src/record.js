@@ -1,6 +1,22 @@
-function Record(input){
-	Record.definePrivateScopeAccessors.call(this)
-	this.setData(input)
+function Record(input, collection){
+	if(input instanceof Record){
+		const originalRecord = input
+		return new Record(originalRecord.getData(), collection)
+	}else if(input instanceof Collection){
+		const inputCollection = input
+		return new Record(inputCollection.getRecords(), collection)
+	}else if(input instanceof Array){
+		const array = input
+		return array.map(item => new Record(item, collection))
+	}else if(input && input.records instanceof Array){
+		const array = input.records
+		return array.map(item => new Record(item, collection))
+	}else{
+		Record.definePrivateScopeAccessors.call(this)
+		this.setData(input)
+		this.setCollection(collection)
+		return this
+	}
 }
 Record.definePrivateScopeAccessors = function(){
 	const pvt = {
@@ -15,7 +31,7 @@ Record.definePrivateScopeAccessors = function(){
 		},
 		setCollection: {
 			value: function(input){
-				if(input === undefined){
+				if(input === undefined || input === null || input === false){
 					const collection = pvt.collection
 					pvt.collection = undefined
 					if(collection instanceof Collection){
@@ -31,7 +47,7 @@ Record.definePrivateScopeAccessors = function(){
 					collection.addRecord(this)
 					return this
 				}else{
-					throw new Error(`@record.setCollection will not accept an object of type ${collection.constructor.name}`)
+					throw new Error(`@record.setCollection will not accept an object of type ${input ? input.constructor.name : input}`)
 				}
 			}
 		},

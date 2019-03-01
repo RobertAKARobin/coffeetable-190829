@@ -1,13 +1,7 @@
-function Collection(input = {}){
+function Collection(input){
 	Collection.definePrivateScopeAccessors.call(this)
-	if(input.records){
-		if(input.records instanceof Array){
-			input.records.forEach(record=>{
-				this.createRecord(record)
-			})
-		}else{
-			this.createRecord(input.records)
-		}
+	if(input !== undefined){
+		this.createRecord(input)
 	}
 }
 Collection.definePrivateScopeAccessors = function(){
@@ -17,8 +11,9 @@ Collection.definePrivateScopeAccessors = function(){
 	}
 	Object.defineProperties(this, {
 		addRecord: {
-			value: function(record){
-				if(record instanceof Record){
+			value: function(input){
+				if(input instanceof Record){
+					const record = input
 					if(record.getCollection() !== this){
 						record.setCollection(this)
 					}
@@ -26,8 +21,14 @@ Collection.definePrivateScopeAccessors = function(){
 						pvt.records.push(record)
 					}
 					return this
+				}else if(input instanceof Collection){
+					const collection = input
+					collection.getRecords().forEach(this.addRecord.bind(this))
+				}else if(input instanceof Array){
+					const array = input
+					array.forEach(this.addRecord.bind(this))
 				}else{
-					throw new Error(`@collection.addRecord will not accept an object of type ${record.constructor.name}`)
+					throw new Error(`@collection.addRecord will not accept an object of type ${input ? input.constructor.name : input}`)
 				}
 			}
 		},
@@ -61,9 +62,7 @@ Object.defineProperties(Collection, {
 Object.defineProperties(Collection.prototype, {
 	createRecord: {
 		value: function(input){
-			const record = Record.create(input)
-			this.addRecord(record)
-			return record
+			return Record.create(input, this)
 		}
 	},
 	toJSON: {

@@ -19,12 +19,13 @@ o.spec('Record', ()=>{
 		o('(@record)', ()=>{
 			const firstRecord = Record.create({foo: 'bar'})
 			const secondRecord = Record.create(firstRecord)
-			o(secondRecord.getData()).equals(firstRecord)
+			o(secondRecord.getData()).equals(firstRecord.getData())
 		})
 		o('(@array)', ()=>{
 			const input = []
-			const record = Record.create(input)
-			o(record.getData()).equals(input)
+			const returnValue = Record.create(input)
+			o(returnValue.constructor).equals(Array)
+			o(returnValue.length).equals(input.length)
 		})
 		o('(@object)', ()=>{
 			const input = {}
