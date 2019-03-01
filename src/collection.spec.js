@@ -26,13 +26,12 @@ o.spec('Collection', ()=>{
 			initialData = initialRecords.map(r=>r.getData())
 		})
 		o.spec('.addRecord', ()=>{
-			let record, secondCollection, secondCollectionInitialRecords, secondCollectionInitialData
+			let record, secondCollection, secondCollectionInitialRecords
 			o.beforeEach(()=>{
 				record = Record.create()
 				secondCollection = Collection.create()
 				secondCollection.createRecord({foo: 'bar'})
 				secondCollectionInitialRecords = secondCollection.getRecords()
-				secondCollectionInitialData = secondCollectionInitialRecords.map(r=>r.getData())
 			})
 			o('()', ()=>{
 				o(()=>collection.addRecord()).throws(Error)
@@ -66,8 +65,7 @@ o.spec('Collection', ()=>{
 				o(collection.getRecords()).deepEquals(initialRecords.concat(secondCollectionInitialRecords))
 
 				const secondCollectionInitialRecordsCollections = secondCollectionInitialRecords.map(r=>r.getCollection())
-				const arrayOfFirstCollection = secondCollectionInitialRecords.length.times(collection)
-				o(secondCollectionInitialRecordsCollections).deepEquals(arrayOfFirstCollection)
+				o(secondCollectionInitialRecordsCollections).deepEquals((secondCollectionInitialRecords.length).times(collection))
 			})
 			o('(@array[])', ()=>{
 				const input = []
@@ -80,7 +78,17 @@ o.spec('Collection', ()=>{
 				o(collection.getRecords()).deepEquals(initialRecords.concat(record))
 			})
 			o('(@array[@collection])', ()=>{
-
+				const secondCollectionData = [1, 2, 3]
+				const secondCollection = Collection.create(secondCollectionData)
+	
+				const thirdCollectionData = [4, 5, 6]
+				const thirdCollection = Collection.create(thirdCollectionData)
+	
+				const returnValue = collection.addRecord([secondCollection, thirdCollection])
+				o(returnValue).equals(collection)
+				o(secondCollection.getRecords()).deepEquals([])
+				o(thirdCollection.getRecords()).deepEquals([])
+				o(collection.getData()).deepEquals(initialData.concat(secondCollectionData, thirdCollectionData))
 			})
 		})
 		o.spec('.createRecord', ()=>{

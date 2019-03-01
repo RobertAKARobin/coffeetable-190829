@@ -7,10 +7,10 @@ function Record(input, collection){
 		return new Record(inputCollection.getRecords(), collection)
 	}else if(input instanceof Array){
 		const array = input
-		return array.map(item => new Record(item, collection))
+		return array.map(item => new Record(item, collection)).flat()
 	}else if(input && input.records instanceof Array){
 		const array = input.records
-		return array.map(item => new Record(item, collection))
+		return array.map(item => new Record(item, collection)).flat()
 	}else{
 		Record.definePrivateScopeAccessors.call(this)
 		this.setData(input)

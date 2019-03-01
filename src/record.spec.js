@@ -27,6 +27,19 @@ o.spec('Record', ()=>{
 			o(returnValue.constructor).equals(Array)
 			o(returnValue.length).equals(input.length)
 		})
+		o('(@array[@collection])', ()=>{
+			const firstCollectionData = [1, 2, 3]
+			const firstCollection = Collection.create(firstCollectionData)
+
+			const secondCollectionData = [4, 5, 6]
+			const secondCollection = Collection.create(secondCollectionData)
+
+			const returnValue = Record.create([firstCollection, secondCollection])
+			const expectedNumberOfRecords = (firstCollectionData.length + secondCollectionData.length).times(()=>Record)
+			o(returnValue.constructor).equals(Array)
+			o(returnValue.map(r=>r.constructor)).deepEquals(expectedNumberOfRecords)
+			o(returnValue.map(r=>r.getData())).deepEquals(firstCollectionData.concat(secondCollectionData))
+		})
 		o('(@object)', ()=>{
 			const input = {}
 			const record = Record.create(input)
@@ -36,6 +49,13 @@ o.spec('Record', ()=>{
 			const input = {foo: 'bar'}
 			const record = Record.create(input)
 			o(record.getData()).equals(input)
+		})
+		o('(@collection)', ()=>{
+			const collectionData = [1, 2, 3]
+			const collection = Collection.create(collectionData)
+			const returnValue = Record.create(collection)
+			o(returnValue.constructor).equals(Array)
+			o(returnValue.map(r=>r.getData())).deepEquals(collectionData)
 		})
 	})
 	o.spec('@record', ()=>{

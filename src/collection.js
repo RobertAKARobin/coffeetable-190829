@@ -24,9 +24,11 @@ Collection.definePrivateScopeAccessors = function(){
 				}else if(input instanceof Collection){
 					const collection = input
 					collection.getRecords().forEach(this.addRecord.bind(this))
+					return this
 				}else if(input instanceof Array){
 					const array = input
 					array.forEach(this.addRecord.bind(this))
+					return this
 				}else{
 					throw new Error(`@collection.addRecord will not accept an object of type ${input ? input.constructor.name : input}`)
 				}
