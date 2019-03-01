@@ -7,59 +7,66 @@ o.spec('Collection', ()=>{
 		})
 	})
 	o.spec('@collection', ()=>{
-		let collection, initialRecords, initialData
+		let collection, initialRecords, initialData, secondCollection, secondCollectionInitialRecords, secondCollectionInitialData
 		o.beforeEach(()=>{
 			collection = Collection.create()
-			collection.createRecord()
+			collection.createRecord({foo: 'bar'})
 			initialRecords = collection.getRecords()
 			initialData = initialRecords.map(r=>r.getData())
+			secondCollection = Collection.create()
+			secondCollection.createRecord({foo: 'bar'})
+			secondCollectionInitialRecords = secondCollection.getRecords()
+			secondCollectionInitialData = secondCollectionInitialRecords.map(r=>r.getData())
 		})
 		o.spec('.addRecord', ()=>{
+			let record
+			o.beforeEach(()=>{
+				record = Record.create()
+			})
 			o('() - error', ()=>{
-				o(() => collection.addRecord()).throws(Error)
-				o(() => collection.addRecord('ayy')).throws(Error)
+				o(()=>collection.addRecord()).throws(Error)
 			})
 			o('(@object) - error', ()=>{
-
+				const input = {}
+				o(()=>collection.addRecord(input)).throws(Error)
 			})
 			o('(@record) - adds record', ()=>{
-
+				const returnValue = collection.addRecord(record)
+				o(returnValue).equals(collection)
+				o(collection.getRecords()).deepEquals(initialRecords.concat(record))
+				o(collection.getRecords().length).equals(initialRecords.length + 1)
+			})
+			o('(@recordThatBelongsToOtherCollection) - adds to this, removes from that', ()=>{
+				collection.addRecord(record)
+				secondCollection.addRecord(record)
+				o(collection.getRecords()).deepEquals(initialRecords)
+				o(record.getCollection()).notEquals(collection)
+				o(secondCollection.getRecords()).deepEquals(secondCollectionInitialRecords.concat(record))
+				o(record.getCollection()).equals(secondCollection)
+			})
+			o('(@recordThatBelongsToSameCollection) - no change', ()=>{
+				collection.addRecord(record)
+				collection.addRecord(record)
+				o(collection.getRecords()).deepEquals(initialRecords.concat(record))
+				o(record.getCollection()).equals(collection)
 			})
 			o('(@collection) - adds all records in collection', ()=>{
-
+				collection.addRecord(secondCollection)
+				o(collection.getRecords().map(r=>r.getData())).deepEquals(secondCollectionInitialData)
+				o(secondCollectionInitialRecords.map(r=>r.getCollection())).deepEquals(secondCollectionInitialRecords.length.times(collection))
 			})
 			o('(@array[]) - adds no records', ()=>{
-
+				const input = []
+				collection.addRecord(input)
+				o(collection.getRecords()).deepEquals(initialRecords)
+			})
+			o('(@array[@record])', ()=>{
+				const input = [record]
+				collection.addRecord(input)
+				o(collection.getRecords()).deepEquals(initialRecords.concat(record))
 			})
 			o('(@array[@collection]) - adds all records in all collections', ()=>{
 
-			})
-			o.spec('when record has no existing collection', ()=>{
-				o('(@record)', ()=>{
-					const record = Record.create()
-					const returnValue = collection.addRecord(record)
-					o(returnValue).equals(collection)
-					o(collection.getRecords()).deepEquals(initialRecords.concat(record))
-					o(collection.getRecords().length).equals(initialRecords.length + 1)
-				})
-			})
-			o.spec('when record has existing collection', ()=>{
-				o('(@record)', ()=>{
-					const secondCollection = Collection.create()
-					const secondCollectionInitialRecords = secondCollection.getRecords()
-					const record = Record.create()
-					collection.addRecord(record)
-					secondCollection.addRecord(record)
-					o(collection.getRecords()).deepEquals(initialRecords)
-					o(record.getCollection()).notEquals(collection)
-					o(secondCollection.getRecords()).deepEquals(secondCollectionInitialRecords.concat(record))
-					o(record.getCollection()).equals(secondCollection)
-				})
-				o('(@recordThatBelongsToCollection)', ()=>{
-					const record = collection.createRecord()
-					collection.addRecord(record)
-					o(collection.getRecords()).deepEquals(initialRecords.concat(record))
-				})
 			})
 		})
 		o.spec('.createRecord', ()=>{
@@ -79,7 +86,7 @@ o.spec('Collection', ()=>{
 				const input = 3
 				const returnValue = collection.createRecord(input)
 				o(returnValue.constructor).equals(Record)
-				o(collection.getRecords().length).equals(1)
+				o(collection.getRecords().length).equals(initialRecords.length + 1)
 				o(collection.getRecords().last().getData()).equals(input)
 			})
 			o('(@object) - creates record with object as data', ()=>{
