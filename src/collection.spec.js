@@ -113,14 +113,14 @@ o.spec('Collection', ()=>{
 				const returnValue = collection.createRecord(input)
 				o(returnValue.constructor).equals(Array)
 				o(returnValue).deepEquals(input)
-				o(collection.getRecords().map(r=>r.getData())).deepEquals(initialData.concat(input))
+				o(collection.getData()).deepEquals(initialData.concat(input))
 			})
 			o('(@array[@number])', ()=>{
 				const input = [1, 2, 3]
 				const returnValue = collection.createRecord(input)
 				o(returnValue.constructor).equals(Array)
 				o(returnValue.map(r=>r.getData())).deepEquals(input)
-				o(collection.getRecords().map(r=>r.getData())).deepEquals(initialData.concat(input))
+				o(collection.getData()).deepEquals(initialData.concat(input))
 			})
 			o('(@record)', ()=>{
 				const inputData = {foo: 'bar'}
@@ -135,8 +135,8 @@ o.spec('Collection', ()=>{
 				const returnValue = collection.createRecord(secondCollection)
 				o(returnValue.constructor).equals(Array)
 				o(returnValue.map(r=>r.getData())).deepEquals(secondCollectionInitialData)
-				o(secondCollection.getRecords().map(r=>r.getData())).deepEquals(secondCollectionInitialData)
-				o(collection.getRecords().map(r=>r.getData())).deepEquals(initialData.concat(secondCollectionInitialData))
+				o(secondCollection.getData()).deepEquals(secondCollectionInitialData)
+				o(collection.getData()).deepEquals(initialData.concat(secondCollectionInitialData))
 			})
 		})
 		o.spec('.removeRecord', ()=>{

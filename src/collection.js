@@ -32,6 +32,11 @@ Collection.definePrivateScopeAccessors = function(){
 				}
 			}
 		},
+		getData: {
+			value: function(){
+				return this.getRecords().map(r=>r.getData())
+			}
+		},
 		getRecords: {
 			value: function(){
 				return Array.from(pvt.records)
