@@ -7,7 +7,7 @@ function Collection(input){
 Collection.definePrivateScopeAccessors = function(){
 	const pvt = {
 		records: [],
-		config: []
+		columns: []
 	}
 	Object.defineProperties(this, {
 		addRecord: {
@@ -30,6 +30,11 @@ Collection.definePrivateScopeAccessors = function(){
 					throw new Error(`@collection.addRecord will not accept an object of type ${input ? input.constructor.name : input}`)
 				}
 				return this
+			}
+		},
+		getColumns: {
+			value: function(){
+				return Array.from(pvt.columns)
 			}
 		},
 		getData: {
@@ -58,6 +63,18 @@ Collection.definePrivateScopeAccessors = function(){
 				}else if(input instanceof Collection){
 					const collection = input
 					collection.getRecords().forEach(this.removeRecord.bind(this))
+				}
+				return this
+			}
+		},
+		setColumns: {
+			value: function(input){
+				if(input instanceof Array){
+					pvt.columns = Array.from(input)
+				}else if(input === undefined || input === null || input === false){
+					pvt.columns = []
+				}else{
+					throw new Error(`@collection.setColumns will not accept an object of type ${input ? input.constructor.name : input}`)
 				}
 				return this
 			}
