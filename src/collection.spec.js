@@ -185,31 +185,31 @@ o.spec('Collection', ()=>{
 				})
 			})
 		})
-		o.spec('.setColumns', ()=>{
+		o.spec('.setColumnNames', ()=>{
 			o('()', ()=>{
-				const returnValue = collection.setColumns()
+				const returnValue = collection.setColumnNames()
 				o(returnValue).equals(collection)
-				o(collection.getColumns()).deepEquals([])
+				o(collection.getColumnNames()).deepEquals([])
 			})
 			o('(@number)', ()=>{
 				const input = 3
-				o(()=>collection.setColumns(input)).throws(Error)
+				o(()=>collection.setColumnNames(input)).throws(Error)
 			})
 			o('(@object)', ()=>{
 				const input = {}
-				o(()=>collection.setColumns(input)).throws(Error)
+				o(()=>collection.setColumnNames(input)).throws(Error)
 			})
 			o('(@array[])', ()=>{
 				const input = []
-				collection.setColumns(input)
-				o(collection.getColumns()).deepEquals(input)
-				o(collection.getColumns()).notEquals(input)
+				collection.setColumnNames(input)
+				o(collection.getColumnNames()).deepEquals(input)
+				o(collection.getColumnNames()).notEquals(input)
 			})
 			o('(@array[@number])', ()=>{
 				const input = [0, 1, 2]
-				collection.setColumns(input)
-				o(collection.getColumns()).deepEquals(input)
-				o(collection.getColumns()).notEquals(input)
+				collection.setColumnNames(input)
+				o(collection.getColumnNames()).deepEquals(input)
+				o(collection.getColumnNames()).notEquals(input)
 			})
 		})
 	})
