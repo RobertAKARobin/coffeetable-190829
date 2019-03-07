@@ -45,7 +45,7 @@ Record.definePrivateScopeAccessors = function(){
 					pvt.collection = collection
 					collection.addRecord(this)
 				}else{
-					throw new Error(`@record.setCollection will not accept an object of type ${input ? input.constructor.name : input}`)
+					throw Coffeetable.rejectInputError('@record.setCollection', input)
 				}
 				return this
 			}

@@ -27,7 +27,7 @@ Collection.definePrivateScopeAccessors = function(){
 					const array = input
 					array.forEach(this.addRecord.bind(this))
 				}else{
-					throw new Error(`@collection.addRecord will not accept an object of type ${input ? input.constructor.name : input}`)
+					throw Coffeetable.rejectInputError('@collection.addRecord', input)
 				}
 				return this
 			}
@@ -74,7 +74,7 @@ Collection.definePrivateScopeAccessors = function(){
 				}else if(input === undefined || input === null || input === false){
 					pvt.columnNames = []
 				}else{
-					throw new Error(`@collection.setColumnNames will not accept an object of type ${input ? input.constructor.name : input}`)
+					throw Coffeetable.rejectInputError('@collection.setColumnNames', input)
 				}
 				return this
 			}

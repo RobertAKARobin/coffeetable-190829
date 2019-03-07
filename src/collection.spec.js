@@ -34,11 +34,11 @@ o.spec('Collection', ()=>{
 				secondCollectionInitialRecords = secondCollection.getRecords()
 			})
 			o('()', ()=>{
-				o(()=>collection.addRecord()).throws(Error)
+				o(()=>collection.addRecord()).throws(TypeError)
 			})
 			o('(@object)', ()=>{
 				const input = {}
-				o(()=>collection.addRecord(input)).throws(Error)
+				o(()=>collection.addRecord(input)).throws(TypeError)
 			})
 			o('(@record)', ()=>{
 				const returnValue = collection.addRecord(record)
@@ -193,11 +193,11 @@ o.spec('Collection', ()=>{
 			})
 			o('(@number)', ()=>{
 				const input = 3
-				o(()=>collection.setColumnNames(input)).throws(Error)
+				o(()=>collection.setColumnNames(input)).throws(TypeError)
 			})
 			o('(@object)', ()=>{
 				const input = {}
-				o(()=>collection.setColumnNames(input)).throws(Error)
+				o(()=>collection.setColumnNames(input)).throws(TypeError)
 			})
 			o('(@array[])', ()=>{
 				const input = []

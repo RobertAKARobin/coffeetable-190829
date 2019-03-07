@@ -76,7 +76,7 @@ o.spec('Record', ()=>{
 				o(collection.getRecords()).deepEquals([record])
 			})
 			o('(@number)', ()=>{
-				o(()=>record.setCollection('ayy')).throws(Error)
+				o(()=>record.setCollection('ayy')).throws(TypeError)
 				o(record.getCollection()).equals(undefined)
 			})
 			o.spec('when has existing collection', ()=>{
