@@ -29,6 +29,27 @@ Record.definePrivateScopeAccessors = function(){
 				return pvt.collection
 			}
 		},
+		getColumns: {
+			value: function(input){
+				if(arguments.length === 0){
+					input = pvt.collection
+				}
+				if(input instanceof Collection){
+					const collection = input
+					const columnNames = collection.getColumnNames()
+					const output = {}
+					const data = (this.getData() || {})
+					columnNames.forEach(columnName=>{
+						if(data.hasOwnProperty(columnName)){
+							output[columnName] = data[columnName]
+						}
+					})
+					return output
+				}else{
+					throw Coffeetable.rejectInputError('@record.getColumns', input)
+				}
+			}
+		},
 		setCollection: {
 			value: function(input){
 				if(input === undefined || input === null || input === false){
