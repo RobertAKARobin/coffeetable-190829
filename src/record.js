@@ -37,14 +37,12 @@ Record.definePrivateScopeAccessors = function(){
 				if(input instanceof Collection){
 					const collection = input
 					const columnNames = collection.getColumnNames()
-					const output = {}
-					const data = (this.getData() || {})
-					columnNames.forEach(columnName=>{
-						if(data.hasOwnProperty(columnName)){
-							output[columnName] = data[columnName]
-						}
-					})
-					return output
+					const data = this.getData()
+					return columnNames.extractFrom(data)
+				}else if(typeof input === 'string'){
+					const columnNames = [input]
+					const data = this.getData()
+					return columnNames.extractFrom(data)
 				}else{
 					throw Coffeetable.rejectInputError('@record.getColumns', input)
 				}

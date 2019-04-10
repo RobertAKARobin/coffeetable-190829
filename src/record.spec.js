@@ -70,8 +70,9 @@ o.spec('Record', ()=>{
 				collection.setColumnNames(['foo', 'bar'])
 			})
 			o('()', ()=>{
-				record.setData({foo: 'fizz'})
-				o(record.getColumns()).deepEquals(record.getData())
+				const initialRecordData = {foo: 'fizz'}
+				record.setData(initialRecordData)
+				o(record.getColumns()).deepEquals(initialRecordData)
 
 				record.setData({foo: undefined})
 				o(record.getColumns()).deepEquals(record.getData())
@@ -83,6 +84,14 @@ o.spec('Record', ()=>{
 			o('(@currentCollection)', ()=>{
 				record.setData({foo: 'fizz'})
 				o(record.getColumns(record.getCollection())).deepEquals(record.getColumns())
+			})
+			o('(@number)', ()=>{
+				o(()=>record.getColumns(3)).throws(TypeError)
+			})
+			o('(@string)', ()=>{
+				const initialRecordData = {foo: 'fizz'}
+				record.setData(initialRecordData)
+				o(record.getColumns('foo')).deepEquals(initialRecordData)
 			})
 		})
 		o.spec('.setCollection', ()=>{
