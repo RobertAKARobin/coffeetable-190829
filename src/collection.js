@@ -11,23 +11,27 @@ Collection.definePrivateScopeAccessors = function(){
 	}
 	Object.defineProperties(this, {
 		addRecord: {
-			value: function(input){
-				if(input instanceof Record){
-					const record = input
+			value: function(inputData, inputPlace){
+				if(inputData instanceof Record){
+					const record = inputData
 					if(record.getCollection() !== this){
 						record.setCollection(this)
 					}
 					if(!pvt.records.includes(record)){
-						pvt.records.push(record)
+						if(isNaN(parseInt(inputPlace))){
+							pvt.records.push(record)
+						}else{
+							pvt.records.splice(inputPlace, 0, record)
+						}
 					}
-				}else if(input instanceof Collection){
-					const collection = input
-					collection.getRecords().forEach(this.addRecord.bind(this))
-				}else if(input instanceof Array){
-					const array = input
-					array.forEach(this.addRecord.bind(this))
+				}else if(inputData instanceof Collection){
+					const collection = inputData
+					collection.getRecords().forEach(record=>this.addRecord(record, inputPlace))
+				}else if(inputData instanceof Array){
+					const array = inputData
+					array.forEach(record=>this.addRecord(record, inputPlace))
 				}else{
-					throw Coffeetable.rejectInputError('@collection.addRecord', input)
+					throw Coffeetable.rejectInputError('@collection.addRecord', inputData)
 				}
 				return this
 			}
@@ -87,8 +91,8 @@ Object.defineProperties(Collection, {
 })
 Object.defineProperties(Collection.prototype, {
 	createRecord: {
-		value: function(input){
-			return Record.create(input, this)
+		value: function(inputData, inputPlace){
+			return Record.create(inputData, this, inputPlace)
 		}
 	},
 	getColumns: {

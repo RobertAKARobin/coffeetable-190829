@@ -1,20 +1,20 @@
-function Record(input, collection){
-	if(input instanceof Record){
-		const originalRecord = input
+function Record(inputData, collection, inputPlace){
+	if(inputData instanceof Record){
+		const originalRecord = inputData
 		return new Record(originalRecord.getData(), collection)
-	}else if(input instanceof Collection){
-		const inputCollection = input
+	}else if(inputData instanceof Collection){
+		const inputCollection = inputData
 		return new Record(inputCollection.getRecords(), collection)
-	}else if(input instanceof Array){
-		const array = input
+	}else if(inputData instanceof Array){
+		const array = inputData
 		return array.map(item => new Record(item, collection)).flat()
-	}else if(input && input.records instanceof Array){
-		const array = input.records
+	}else if(inputData && inputData.records instanceof Array){
+		const array = inputData.records
 		return array.map(item => new Record(item, collection)).flat()
 	}else{
 		Record.definePrivateScopeAccessors.call(this)
-		this.setData(input)
-		this.setCollection(collection)
+		this.setData(inputData)
+		this.setCollection(collection, inputPlace)
 		return this
 	}
 }
@@ -30,22 +30,22 @@ Record.definePrivateScopeAccessors = function(){
 			}
 		},
 		setCollection: {
-			value: function(input){
-				if(input === undefined || input === null || input === false){
+			value: function(inputData, inputPlace){
+				if(inputData === undefined || inputData === null || inputData === false){
 					const collection = pvt.collection
 					pvt.collection = undefined
 					if(collection instanceof Collection){
 						collection.removeRecord(this)
 					}
-				}else if(input instanceof Collection){
-					const collection = input
+				}else if(inputData instanceof Collection){
+					const collection = inputData
 					if(pvt.collection){
 						pvt.collection.removeRecord(this)
 					}
 					pvt.collection = collection
-					collection.addRecord(this)
+					collection.addRecord(this, inputPlace)
 				}else{
-					throw Coffeetable.rejectInputError('@record.setCollection', input)
+					throw Coffeetable.rejectInputError('@record.setCollection', inputData)
 				}
 				return this
 			}
