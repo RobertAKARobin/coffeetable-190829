@@ -18,6 +18,7 @@ o.spec('In browser', ()=>{
 		input.records = input.collection.records
 		
 		const collection = Collection.create(Data)
+		collection.setColumnNames(['age', 'name', 'cats', 'isFriendly'])
 		m.mount($('#app-output'), {
 			view: ()=>m(Collection.component, {collection})
 		})
