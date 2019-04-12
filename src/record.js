@@ -29,25 +29,6 @@ Record.definePrivateScopeAccessors = function(){
 				return pvt.collection
 			}
 		},
-		getColumns: {
-			value: function(input){
-				if(arguments.length === 0){
-					input = pvt.collection
-				}
-				if(input instanceof Collection){
-					const collection = input
-					const columnNames = collection.getColumnNames()
-					const data = this.getData()
-					return columnNames.extractFrom(data)
-				}else if(typeof input === 'string'){
-					const columnNames = [input]
-					const data = this.getData()
-					return columnNames.extractFrom(data)
-				}else{
-					throw Coffeetable.rejectInputError('@record.getColumns', input)
-				}
-			}
-		},
 		setCollection: {
 			value: function(input){
 				if(input === undefined || input === null || input === false){
@@ -89,6 +70,28 @@ Object.defineProperties(Record, {
 	}
 })
 Object.defineProperties(Record.prototype, {
+	getColumns: {
+		value: function(input){
+			if(arguments.length === 0){
+				input = this.getCollection()
+			}
+			const data = this.getData()
+			if(data === undefined || data === null){
+				return data
+			}else{
+				let columnNames
+				if(input instanceof Collection){
+					const collection = input
+					columnNames = collection.getColumnNames()
+				}else if(input instanceof Array){
+					columnNames = input
+				}else{
+					columnNames = [input]
+				}
+				return columnNames.extractFrom(data)
+			}
+		}
+	},
 	toJSON: {
 		value: function(){
 			return {

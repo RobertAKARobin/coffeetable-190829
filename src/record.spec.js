@@ -64,29 +64,48 @@ o.spec('Record', ()=>{
 			record = Record.create()
 		})
 		o.spec('.getColumns', ()=>{
+			let collection
 			o.beforeEach(()=>{
-				const collection = Collection.create()
+				collection = Collection.create()
 				collection.addRecord(record)
 				collection.setColumnNames(['foo', 'bar'])
 			})
-			o('()', ()=>{
-				const initialRecordData = {foo: 'fizz'}
-				record.setData(initialRecordData)
-				o(record.getColumns()).deepEquals(initialRecordData)
-
-				record.setData({foo: undefined})
-				o(record.getColumns()).deepEquals(record.getData())
-
-				record.setData({foo: 'fizz', invalidColumnName: 'aaa'})
-				o(record.getColumns()).notDeepEquals(record.getData())
-				o(record.getColumns()).deepEquals({foo: 'fizz'})
+			o.spec('()', ()=>{
+				o('when has collection', ()=>{
+					const initialRecordData = {foo: 'fizz'}
+					record.setData(initialRecordData)
+					o(record.getColumns()).deepEquals(initialRecordData)
+	
+					record.setData({foo: undefined})
+					o(record.getColumns()).deepEquals(record.getData())
+	
+					record.setData({foo: 'fizz', invalidColumnName: 'aaa'})
+					o(record.getColumns()).notDeepEquals(record.getData())
+					o(record.getColumns()).deepEquals({foo: 'fizz'})
+				})
+				o('when has no collection', ()=>{
+					const initialRecordData = {foo: 'fizz'}
+					record.setData(initialRecordData)
+					record.setCollection()
+					o(record.getColumns()).deepEquals({})
+				})
 			})
 			o('(@currentCollection)', ()=>{
 				record.setData({foo: 'fizz'})
 				o(record.getColumns(record.getCollection())).deepEquals(record.getColumns())
 			})
+			o('(@otherCollection)', ()=>{
+				const initialRecordData = {foo: 'fizz'}
+				record.setData(initialRecordData)
+				record.setCollection()
+				o(record.getCollection()).equals(undefined)
+				o(record.getColumns(collection)).deepEquals(initialRecordData)
+			})
 			o('(@number)', ()=>{
-				o(()=>record.getColumns(3)).throws(TypeError)
+				o(record.getColumns(3)).equals(record.getData())
+			})
+			o('(undefined)', ()=>{
+				o(record.getColumns(undefined)).equals(record.getData())
 			})
 			o('(@string)', ()=>{
 				const initialRecordData = {foo: 'fizz'}
