@@ -282,7 +282,13 @@ o.spec('Collection', ()=>{
 			})
 			o('(@number)', ()=>{
 				const input = 3
-				o(()=>collection.setColumnNames(input)).throws(TypeError)
+				collection.setColumnNames(input)
+				o(collection.getColumnNames()).deepEquals([input])
+			})
+			o('(@string)', ()=>{
+				const input = 'foo'
+				collection.setColumnNames(input)
+				o(collection.getColumnNames()).deepEquals([input])
 			})
 			o('(@object)', ()=>{
 				const input = {}

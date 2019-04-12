@@ -66,6 +66,8 @@ Collection.definePrivateScopeAccessors = function(){
 			value: function(input){
 				if(input instanceof Array){
 					pvt.columnNames = Array.from(input)
+				}else if(typeof input === 'string' || typeof input === 'number'){
+					pvt.columnNames = [input]
 				}else if(input === undefined || input === null || input === false){
 					pvt.columnNames = []
 				}else{
