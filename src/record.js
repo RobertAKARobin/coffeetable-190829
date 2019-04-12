@@ -73,23 +73,27 @@ Object.defineProperties(Record.prototype, {
 	getColumns: {
 		value: function(input){
 			if(arguments.length === 0){
-				input = this.getCollection()
-			}
-			const data = this.getData()
-			if(data === undefined || data === null){
-				return data
-			}else{
-				let columnNames
-				if(input instanceof Collection){
-					const collection = input
-					columnNames = collection.getColumnNames()
-				}else if(input instanceof Array){
-					columnNames = input
+				const collection = this.getCollection()
+				if(collection === undefined){
+					return []
 				}else{
-					columnNames = [input]
+					input = collection
 				}
-				return columnNames.extractFrom(data)
 			}
+			let data = this.getData()
+			if(data === undefined || data === null){
+				data = {}
+			}
+			let columnNames
+			if(input instanceof Collection){
+				const collection = input
+				columnNames = collection.getColumnNames()
+			}else if(input instanceof Array){
+				columnNames = input
+			}else{
+				columnNames = [input]
+			}
+			return columnNames.extractFrom(data)
 		}
 	},
 	toJSON: {

@@ -72,22 +72,19 @@ o.spec('Record', ()=>{
 			})
 			o.spec('()', ()=>{
 				o('when has collection', ()=>{
-					const initialRecordData = {foo: 'fizz'}
-					record.setData(initialRecordData)
-					o(record.getColumns()).deepEquals(initialRecordData)
+					record.setData({foo: 'fizz'})
+					o(record.getColumns()).deepEquals(['fizz', undefined])
 	
 					record.setData({foo: undefined})
-					o(record.getColumns()).deepEquals(record.getData())
+					o(record.getColumns()).deepEquals([undefined, undefined])
 	
-					record.setData({foo: 'fizz', invalidColumnName: 'aaa'})
-					o(record.getColumns()).notDeepEquals(record.getData())
-					o(record.getColumns()).deepEquals({foo: 'fizz'})
+					record.setData({foo: 'fizz', unusedColumn: 'aaa'})
+					o(record.getColumns()).deepEquals(['fizz', undefined])
 				})
 				o('when has no collection', ()=>{
-					const initialRecordData = {foo: 'fizz'}
-					record.setData(initialRecordData)
+					record.setData({foo: 'fizz'})
 					record.setCollection()
-					o(record.getColumns()).deepEquals({})
+					o(record.getColumns()).deepEquals([])
 				})
 			})
 			o('(@currentCollection)', ()=>{
@@ -95,22 +92,21 @@ o.spec('Record', ()=>{
 				o(record.getColumns(record.getCollection())).deepEquals(record.getColumns())
 			})
 			o('(@otherCollection)', ()=>{
-				const initialRecordData = {foo: 'fizz'}
-				record.setData(initialRecordData)
+				record.setData({foo: 'fizz'})
 				record.setCollection()
 				o(record.getCollection()).equals(undefined)
-				o(record.getColumns(collection)).deepEquals(initialRecordData)
+				o(record.getColumns(collection)).deepEquals(['fizz', undefined])
 			})
 			o('(@number)', ()=>{
-				o(record.getColumns(3)).equals(record.getData())
+				o(record.getColumns(3)).deepEquals([undefined])
+				o(record.getColumns([3, 4])).deepEquals([undefined, undefined])
 			})
 			o('(undefined)', ()=>{
-				o(record.getColumns(undefined)).equals(record.getData())
+				o(record.getColumns(undefined)).deepEquals([undefined])
 			})
 			o('(@string)', ()=>{
-				const initialRecordData = {foo: 'fizz'}
-				record.setData(initialRecordData)
-				o(record.getColumns('foo')).deepEquals(initialRecordData)
+				record.setData({foo: 'fizz'})
+				o(record.getColumns('foo')).deepEquals(['fizz'])
 			})
 		})
 		o.spec('.setCollection', ()=>{
