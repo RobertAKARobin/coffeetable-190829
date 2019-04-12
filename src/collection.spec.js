@@ -147,6 +147,95 @@ o.spec('Collection', ()=>{
 				o(collection.getData()).deepEquals(initialData.concat(secondCollectionInitialData))
 			})
 		})
+		o.spec('.getColumns', ()=>{
+			o.spec('when no existing records', ()=>{
+				let collection
+				o.beforeEach(()=>{
+					collection = Collection.create()
+				})
+				o('()', ()=>{
+					o(collection.getColumns()).deepEquals([])
+
+					collection.setColumnNames(['foo', 'bar'])
+					o(collection.getColumns()).deepEquals([])
+				})
+				o('(@number)', ()=>{
+					o(collection.getColumns(3)).deepEquals([])
+				})
+			})
+			o.spec('when has existing records', ()=>{
+				let collection, recordA, recordB, initialRecordAData, initialRecordBData, records
+				o.beforeEach(()=>{
+					initialRecordAData = {foo: 'aaa', fizz: 'buzz'}
+					recordA = Record.create(initialRecordAData)
+					initialRecordBData = {foo: 'bbb', bizz: 'fuzz'}
+					recordB = Record.create(initialRecordBData)
+					recordC = Record.create()
+					recordD = Record.create('recordD')
+					records = [recordA, recordB, recordC, recordD]
+					collection = Collection.create(records)
+					collection.setColumnNames(['foo', 'zoo'])
+				})
+				o('()', ()=>{
+					let returnValue = collection.getColumns()
+					o(returnValue instanceof Array).equals(true)
+					o(returnValue.length).equals(records.length)
+					o(returnValue[0]).deepEquals({foo: 'aaa'})
+					o(returnValue[1]).deepEquals({foo: 'bbb'})
+					o(returnValue[2]).equals(undefined)
+	
+					collection.setColumnNames()
+					returnValue = collection.getColumns()
+					o(returnValue.length).equals(records.length)
+					o(returnValue[0]).deepEquals({})
+					o(returnValue[1]).deepEquals({})
+					o(returnValue[2]).equals(undefined)
+
+					collection.setColumnNames(['bizz'])
+					returnValue = collection.getColumns()
+					o(returnValue[0]).deepEquals({})
+					o(returnValue[1]).deepEquals({bizz: 'fuzz'})
+				})
+				o('(@self)', ()=>{
+					let returnValue = collection.getColumns(collection)
+					o(returnValue[0]).deepEquals({foo: 'aaa'})
+					o(returnValue[1]).deepEquals({foo: 'bbb'})
+					o(returnValue[2]).equals(undefined)
+				})
+				o('(@otherCollection)', ()=>{
+					const otherCollection = Collection.create()
+					otherCollection.setColumnNames(['foo'])
+					let returnValue = collection.getColumns(otherCollection)
+					o(returnValue[0]).deepEquals({foo: 'aaa'})
+					o(returnValue[1]).deepEquals({foo: 'bbb'})
+					o(returnValue[2]).equals(undefined)
+				})
+				o('(@string)', ()=>{
+					let returnValue = collection.getColumns('foo')
+					o(returnValue[0]).deepEquals({foo: 'aaa'})
+					o(returnValue[1]).deepEquals({foo: 'bbb'})
+					o(returnValue[2]).equals(undefined)
+
+					returnValue = collection.getColumns('bar')
+					o(returnValue[0]).deepEquals({})
+					o(returnValue[1]).deepEquals({})
+					o(returnValue[2]).equals(undefined)
+				})
+				o('(@number)', ()=>{
+					let returnValue = collection.getColumns(5)
+					o(returnValue[0]).deepEquals({})
+					o(returnValue[1]).deepEquals({})
+					o(returnValue[2]).equals(undefined)
+					o(returnValue[3]).deepEquals({5: 'd'})
+				})
+				o('(@array)', ()=>{
+					let returnValue = collection.getColumns(['foo', 'bar'])
+					o(returnValue[0]).deepEquals({foo: 'aaa'})
+					o(returnValue[1]).deepEquals({foo: 'bbb'})
+					o(returnValue[2]).equals(undefined)
+				})
+			})
+		})
 		o.spec('.removeRecord', ()=>{
 			o.spec('when no existing records', ()=>{
 				o('()', ()=>{

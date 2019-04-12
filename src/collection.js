@@ -37,11 +37,6 @@ Collection.definePrivateScopeAccessors = function(){
 				return Array.from(pvt.columnNames)
 			}
 		},
-		getData: {
-			value: function(){
-				return this.getRecords().map(r=>r.getData())
-			}
-		},
 		getRecords: {
 			value: function(){
 				return Array.from(pvt.records)
@@ -92,6 +87,29 @@ Object.defineProperties(Collection.prototype, {
 	createRecord: {
 		value: function(input){
 			return Record.create(input, this)
+		}
+	},
+	getColumns: {
+		value: function(input){
+			let columnNames
+			if(arguments.length === 0){
+				columnNames = this.getColumnNames()
+			}else{
+				if(input instanceof Collection){
+					const collection = input
+					columnNames = collection.getColumnNames()
+				}else if(input instanceof Array){
+					columnNames = input
+				}else{
+					columnNames = [input]
+				}	
+			}
+			return this.getRecords().map(record=>record.getColumns(columnNames))
+		}
+	},
+	getData: {
+		value: function(){
+			return this.getRecords().map(r=>r.getData())
 		}
 	},
 	toJSON: {
