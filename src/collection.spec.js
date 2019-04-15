@@ -1,4 +1,5 @@
 o.spec('Collection', ()=>{
+	'use strict'
 	o.spec('.create', ()=>{
 		o('()', ()=>{
 			const collection = Collection.create()
@@ -18,19 +19,15 @@ o.spec('Collection', ()=>{
 		})
 	})
 	o.spec('@collection', ()=>{
-		let collection, initialRecords, initialData
-		o.beforeEach(()=>{
-			collection = Collection.create()
-			collection.createRecord({foo: 'bar'})
-			initialRecords = collection.getRecords()
-			initialData = initialRecords.map(r=>r.getData())
-		})
 		o.spec('.addRecord', ()=>{
-			let record, secondCollection, secondCollectionInitialRecords
+			let collection, record, initialData, initialRecords, secondCollection, secondCollectionInitialRecords
 			o.beforeEach(()=>{
-				record = Record.create()
+				collection = Collection.create()
+				record = Record.create('aaa')
+				initialRecords = collection.getRecords()
+				initialData = collection.getData()
 				secondCollection = Collection.create()
-				secondCollection.createRecord({foo: 'bar'})
+				secondCollection.createRecord('bbb')
 				secondCollectionInitialRecords = secondCollection.getRecords()
 			})
 			o('()', ()=>{
@@ -92,6 +89,13 @@ o.spec('Collection', ()=>{
 			})
 		})
 		o.spec('.createRecord', ()=>{
+			let collection, initialRecords, initialData
+			o.beforeEach(()=>{
+				collection = Collection.create()
+				collection.createRecord({foo: 'bar'})
+				initialRecords = collection.getRecords()
+				initialData = initialRecords.map(r=>r.getData())
+			})
 			o('()', ()=>{
 				const returnValue = collection.createRecord()
 				o(returnValue.constructor).equals(Record)
@@ -148,8 +152,8 @@ o.spec('Collection', ()=>{
 			})
 		})
 		o.spec('.getColumns', ()=>{
+			let collection
 			o.spec('when no existing records', ()=>{
-				let collection
 				o.beforeEach(()=>{
 					collection = Collection.create()
 				})
@@ -164,7 +168,7 @@ o.spec('Collection', ()=>{
 				})
 			})
 			o.spec('when has existing records', ()=>{
-				let collection, recordA, recordB, initialRecordAData, initialRecordBData, records
+				let recordA, recordB, recordC, recordD, initialRecordAData, initialRecordBData, records
 				o.beforeEach(()=>{
 					initialRecordAData = {foo: 'aaa', fizz: 'buzz'}
 					recordA = Record.create(initialRecordAData)
@@ -237,6 +241,11 @@ o.spec('Collection', ()=>{
 			})
 		})
 		o.spec('.removeRecord', ()=>{
+			let collection, initialRecords
+			o.beforeEach(()=>{
+				collection = Collection.create()
+				initialRecords = collection.getRecords()
+			})
 			o.spec('when no existing records', ()=>{
 				o('()', ()=>{
 					const returnValue = collection.removeRecord()
@@ -275,6 +284,10 @@ o.spec('Collection', ()=>{
 			})
 		})
 		o.spec('.setColumnNames', ()=>{
+			let collection
+			o.beforeEach(()=>{
+				collection = Collection.create()
+			})
 			o('()', ()=>{
 				const returnValue = collection.setColumnNames()
 				o(returnValue).equals(collection)

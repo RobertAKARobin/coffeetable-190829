@@ -12,6 +12,7 @@ function $(selector){
 }
 
 o.spec('In browser', ()=>{
+	'use strict'
 	const input = {}
 	o.beforeEach(()=>{
 		input.collection = JSON.parse(JSON.stringify(Data))

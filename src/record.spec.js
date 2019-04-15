@@ -1,4 +1,5 @@
 o.spec('Record', ()=>{
+	'use strict'
 	o.spec('.create', ()=>{
 		o('()', ()=>{
 			const record = Record.create()
