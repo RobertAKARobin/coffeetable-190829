@@ -24,7 +24,7 @@ o.spec('In browser', ()=>{
 		})
 	})
 	o('on load', () => {
-		o($('[collection]').length).equals(1)
-		o($('[record]').length).equals(input.records.length)
+		o($('[data-collection]').length).equals(1)
+		o($('[data-record]').length).equals(input.records.length)
 	})
 })

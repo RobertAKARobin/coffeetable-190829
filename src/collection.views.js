@@ -1,21 +1,24 @@
 Collection.component = {
 	view: function(vnode){
 		const collection = vnode.attrs.collection
-		return m('table[collection]', [
-			m('thead', [
-				m('tr', [
-					m('th'),
-					collection.getColumnNames().map(columnName=>m('th', columnName))
+		return m('div[data-collection]', [
+			m('div[data-head]', [
+				m('div[data-row]', [
+					m('div'),
+					collection.getColumnNames().map(columnName=>m('div', columnName))
 				])
 			]),
-			m('tbody.body', [
-				collection.getRecords().map((record, recordIndex)=>m('tr[record]', [
-					m('td', [
+			m('div[data-body]', [
+				collection.getRecords().map((record, recordIndex)=>m('div[data-row][data-record]', [
+					m('div', [
 						m('button', {
 							onclick: ()=>collection.createRecord(null, recordIndex + 1)
-						}, 'Add')
+						}, 'Add'),
+						m('button', {
+							onclick: ()=>collection.removeRecord(record)
+						}, 'Remove')
 					]),
-					record.getColumns().map(value=>m('td', value === false ? 'false' : value))
+					record.getColumns().map(value=>m('div', value === false ? 'false' : value))
 				]))
 			])
 		])
